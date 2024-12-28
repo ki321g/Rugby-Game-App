@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -47,6 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ie.setu.rugbygame.R
 import ie.setu.rugbygame.ui.theme.*
+import ie.setu.rugbygame.data.rules.Constants.SIGN_IN_WITH_GOOGLE
+import timber.log.Timber
 
 @Preview
 @Composable
@@ -57,6 +60,58 @@ fun DonationCardPreview() {
             HeadingLogoComponent()
             CheckboxComponent(value = "My Text", onTextSelected = {}, onCheckedChange ={} )
         }
+    }
+}
+@Composable
+fun GoogleSignInButtonComponent(onButtonClicked: () -> Unit) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(48.dp),
+        onClick = {
+            onButtonClicked.invoke()
+        },
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(Color.Transparent),
+        shape = RoundedCornerShape(50.dp),
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(48.dp)
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            gStartGradientColor,
+                            gEndGradientColor,
+                        )
+                    ),
+                    shape = RoundedCornerShape(50.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Row {
+                Column {
+
+                    Image(
+                        modifier = Modifier.padding(end = 40.dp),
+                        painter = painterResource(
+                            id = R.drawable.ic_google_logo
+                        ),
+                        contentDescription = null
+                    )
+                }
+                Text(
+                    text = SIGN_IN_WITH_GOOGLE,
+                    fontSize = 18.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic,
+                    modifier = Modifier.padding(end = 40.dp)
+                )
+            }
+        }
+
     }
 }
 
@@ -97,7 +152,7 @@ fun HeadingLogoComponent() {
     Row(verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-        ) {
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -282,7 +337,7 @@ fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
 
         annotatedString.getStringAnnotations(offset, offset)
             .firstOrNull()?.also { span ->
-                Log.d("ClickableTextComponent", "{${span.item}}")
+                Timber.tag("ClickableTextComponent").d("{${span.item}}")
 
                 if ((span.item == termsAndConditionsText) || (span.item == privacyPolicyText)) {
                     onTextSelected(span.item)
@@ -457,6 +512,8 @@ fun AppToolbar(
         }
     )
 }
+
+
 
 
 
