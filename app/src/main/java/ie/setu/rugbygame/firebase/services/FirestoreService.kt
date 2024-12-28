@@ -1,5 +1,6 @@
 package ie.setu.rugbygame.firebase.services
 
+import android.net.Uri
 import ie.setu.rugbygame.data.model.DonationModel
 import kotlinx.coroutines.flow.Flow
 
@@ -13,4 +14,6 @@ interface FirestoreService {
     suspend fun insert(email: String, donation: Donation)
     suspend fun update(email: String, donation: Donation)
     suspend fun delete(email: String, donationId: String)
+    suspend fun updatePhotoUris(email: String, uri: Uri)
+
 }

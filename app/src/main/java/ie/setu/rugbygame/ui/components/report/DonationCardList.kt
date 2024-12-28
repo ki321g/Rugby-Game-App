@@ -1,5 +1,6 @@
 package ie.setu.rugbygame.ui.components.report
 
+import android.net.Uri
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import ie.setu.rugbygame.data.model.DonationModel
 import ie.setu.rugbygame.data.model.fakeDonations
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import java.text.DateFormat
+
 
 @Composable
 internal fun DonationCardList(
@@ -31,8 +33,8 @@ internal fun DonationCardList(
                 dateCreated = DateFormat.getDateTimeInstance().format(donation.dateDonated),
                 dateModified = DateFormat.getDateTimeInstance().format(donation.dateModified),
                 onClickDelete = { onDeleteDonation(donation) },
-                onClickDonationDetails = { onClickDonationDetails(donation._id) }
-                //  onRefreshList = onRefreshList
+                onClickDonationDetails = { onClickDonationDetails(donation._id) },
+                photoUri = Uri.parse(donation.imageUri)
             )
         }
     }
