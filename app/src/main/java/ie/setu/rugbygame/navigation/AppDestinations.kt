@@ -8,10 +8,12 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Details
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+
 
 interface AppDestination {
     val icon: ImageVector
@@ -71,8 +73,14 @@ object Register : AppDestination {
     override val route = "Register"
 }
 
-val bottomAppBarDestinations = listOf(Donate, Report, About, Profile)
+object Map : AppDestination {
+    override val icon = Icons.Filled.LocationOn
+    override val label = "Map"
+    override val route = "map"
+}
+
+val bottomAppBarDestinations = listOf(Donate, Map, Report, About, Profile)
 val userSignedOutDestinations = listOf(Login, Register)
-val allDestinations = listOf(Report, Donate, About, Details, Home, Profile, Login, Register)
+val allDestinations = listOf(Report, Donate, About, Details, Home, Profile, Login, Register, Map)
 
 

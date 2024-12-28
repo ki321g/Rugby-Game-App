@@ -21,7 +21,9 @@ data class DonationModel(
     @SerializedName("datemodified")
     val dateModified: Date = Date(),
     var email: String = "joe@bloggs.com",
-    var imageUri: String = ""
+    var imageUri: String = "",
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0
 )
 
 val fakeDonations = List(30) { i ->

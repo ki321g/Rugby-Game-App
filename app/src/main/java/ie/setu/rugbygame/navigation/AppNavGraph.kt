@@ -12,6 +12,7 @@ import ie.setu.rugbygame.ui.screens.details.DetailsScreen
 import ie.setu.rugbygame.ui.screens.donate.DonateScreen
 import ie.setu.rugbygame.ui.screens.home.HomeScreen
 import ie.setu.rugbygame.ui.screens.login.LoginScreen
+import ie.setu.rugbygame.ui.screens.map.MapScreen
 import ie.setu.rugbygame.ui.screens.profile.ProfileScreen
 import ie.setu.rugbygame.ui.screens.register.RegisterScreen
 import ie.setu.rugbygame.ui.screens.report.ReportScreen
@@ -21,7 +22,8 @@ fun NavHostProvider(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination: AppDestination,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    permissions: Boolean
 ) {
     NavHost(
         navController = navController,
@@ -41,7 +43,7 @@ fun NavHostProvider(
             //call our 'Report' Screen Here
             ReportScreen(modifier = modifier,
                 onClickDonationDetails = {
-                    donationId : String ->
+                        donationId : String ->
                     navController.navigateToDonationDetails(donationId)
                 },
             )
@@ -88,10 +90,14 @@ fun NavHostProvider(
                 },
             )
         }
+
+        composable(route = Map.route) {
+            //call our 'Map' Screen Here
+            MapScreen(permissions = permissions)
+        }
     }
 }
 
 private fun NavHostController.navigateToDonationDetails(donationId: String) {
     this.navigate("details/$donationId")
 }
-

@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
@@ -32,6 +33,7 @@ import ie.setu.rugbygame.data.model.DonationModel
 import ie.setu.rugbygame.data.model.fakeDonations
 import ie.setu.rugbygame.ui.components.general.ShowLoader
 import ie.setu.rugbygame.ui.screens.donate.DonateViewModel
+import ie.setu.rugbygame.ui.screens.map.MapViewModel
 import ie.setu.rugbygame.ui.screens.report.ReportViewModel
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import timber.log.Timber
@@ -42,6 +44,7 @@ fun DonateButton(
     donation: DonationModel,
     donateViewModel: DonateViewModel = hiltViewModel(),
     reportViewModel: ReportViewModel = hiltViewModel(),
+    mapViewModel: MapViewModel = hiltViewModel(),
     onTotalDonatedChange: (Int) -> Unit
 ) {
     val donations = reportViewModel.uiDonations.collectAsState().value
@@ -51,6 +54,14 @@ fun DonateButton(
 
     val isError = donateViewModel.isErr.value
     val error = donateViewModel.error.value
+    val locationLatLng = mapViewModel.currentLatLng.collectAsState().value
+
+    LaunchedEffect(mapViewModel.currentLatLng){
+        mapViewModel.getLocationUpdates()
+    }
+
+    Timber.i("DONATE BUTTON LAT/LNG COORDINATES " +
+            "lat/Lng: " + "$locationLatLng ")
 
     Row {
         Button(
@@ -58,7 +69,11 @@ fun DonateButton(
                 if(totalDonated + donation.paymentAmount <= 10000) {
                     totalDonated+=donation.paymentAmount
                     onTotalDonatedChange(totalDonated)
-                    donateViewModel.insert(donation)
+                    val donationLatLng = donation.copy(
+                        latitude = locationLatLng.latitude,
+                        longitude = locationLatLng.longitude
+                    )
+                    donateViewModel.insert(donationLatLng)
                 }
                 else
                     Toast.makeText(context,message,
@@ -105,6 +120,8 @@ fun DonateButton(
     if(isError)
         Toast.makeText(context,"Unable to Donate at this Time...",
             Toast.LENGTH_SHORT).show()
+    else
+        reportViewModel.getDonations()
 }
 
 @Preview(showBackground = true)
