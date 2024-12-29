@@ -17,7 +17,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import ie.setu.rugbygame.navigation.Login
 import ie.setu.rugbygame.navigation.NavHostProvider
-import ie.setu.rugbygame.navigation.Report
+import ie.setu.rugbygame.navigation.Results
 import ie.setu.rugbygame.navigation.allDestinations
 import ie.setu.rugbygame.navigation.bottomAppBarDestinations
 import ie.setu.rugbygame.navigation.userSignedOutDestinations
@@ -58,7 +58,7 @@ fun HomeScreen(modifier: Modifier = Modifier,
     )
 
     if (isActiveSession) {
-        startScreen = Report
+        startScreen = Results
         LaunchedEffect(locationPermissions.allPermissionsGranted) {
             locationPermissions.launchMultiplePermissionRequest()
             if (locationPermissions.allPermissionsGranted) {

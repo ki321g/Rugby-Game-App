@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ie.setu.rugbygame.data.model.DonationModel
+import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.firebase.services.AuthService
 import ie.setu.rugbygame.firebase.services.FirestoreService
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ constructor(private val repository: FirestoreService,
             savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    var donation = mutableStateOf(DonationModel())
+    var game = mutableStateOf(RugbyGameModel())
     val id: String = checkNotNull(savedStateHandle["id"])
     var isErr = mutableStateOf(false)
     var error = mutableStateOf(Exception())
@@ -28,7 +28,7 @@ constructor(private val repository: FirestoreService,
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                donation.value = repository.get(authService.email!!,id)!!
+                game.value = repository.get(authService.email!!,id)!!
                 isErr.value = false
                 isLoading.value = false
             } catch (e: Exception) {
@@ -39,11 +39,11 @@ constructor(private val repository: FirestoreService,
         }
     }
 
-    fun updateDonation(donation: DonationModel) {
+    fun updateGame(game: RugbyGameModel) {
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                repository.update(authService.email!!,donation)
+                repository.update(authService.email!!,game)
                 isErr.value = false
                 isLoading.value = false
             } catch (e: Exception) {

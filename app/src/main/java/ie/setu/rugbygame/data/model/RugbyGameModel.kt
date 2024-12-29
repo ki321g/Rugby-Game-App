@@ -1,11 +1,12 @@
 package ie.setu.rugbygame.data.model
 
+import android.net.Uri
 import androidx.room.Entity
 import com.google.firebase.firestore.DocumentId
 import java.util.Date
 
 @Entity
-data class DonationModel(
+data class RugbyGameModel(
     @DocumentId val _id: String = "N/A",
     val paymentType: String = "N/A",
     val paymentAmount: Int = 0,
@@ -18,9 +19,8 @@ data class DonationModel(
     var longitude: Double = 0.0
 )
 
-
-val fakeDonations = List(30) { i ->
-    DonationModel(
+val fakeGames = List(30) { i ->
+    RugbyGameModel(
         _id = "12345" + i,
         "PayPal $i",
         i.toInt(),

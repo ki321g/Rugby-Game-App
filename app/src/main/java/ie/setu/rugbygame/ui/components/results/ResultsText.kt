@@ -1,4 +1,4 @@
-package ie.setu.rugbygame.ui.components.report
+package ie.setu.rugbygame.ui.components.results
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,10 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ie.setu.rugbygame.R
+import ie.setu.rugbygame.ui.components.results.ResultsText
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 
 @Composable
-fun ReportText(modifier: Modifier = Modifier) {
+fun ResultsText(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(
             top = 24.dp,
@@ -24,7 +25,7 @@ fun ReportText(modifier: Modifier = Modifier) {
         ),
         verticalArrangement = Arrangement.spacedBy(24.dp)) {
         Text(
-            text = stringResource(R.string.reportTitle),
+            text = stringResource(R.string.resultsTitle),
             fontWeight = FontWeight.Bold,
             fontSize = 28.sp,
             color = Color.Black
@@ -36,6 +37,6 @@ fun ReportText(modifier: Modifier = Modifier) {
 @Composable
 fun ReportPreview() {
     RugbyScoreTheme {
-        ReportText()
+        ResultsText()
     }
 }

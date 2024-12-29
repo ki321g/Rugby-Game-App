@@ -1,10 +1,10 @@
-package ie.setu.rugbygame.ui.screens.report
+package ie.setu.rugbygame.ui.screens.results
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ie.setu.rugbygame.data.model.DonationModel
+import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.firebase.services.AuthService
 import ie.setu.rugbygame.firebase.services.FirestoreService
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,30 +15,30 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ReportViewModel @Inject
+class ResultsViewModel @Inject
 constructor(private val repository: FirestoreService,
             private val authService: AuthService
 ) : ViewModel() {
-    private val _donations
-            = MutableStateFlow<List<DonationModel>>(emptyList())
-    val uiDonations: StateFlow<List<DonationModel>>
-            = _donations.asStateFlow()
+    private val _games
+            = MutableStateFlow<List<RugbyGameModel>>(emptyList())
+    val uiGames: StateFlow<List<RugbyGameModel>>
+            = _games.asStateFlow()
     var iserror = mutableStateOf(false)
     var isloading = mutableStateOf(false)
     var error = mutableStateOf(Exception())
 
-    init { getDonations() }
+    init { getGames() }
 
-    fun getDonations() {
+    fun getGames() {
         viewModelScope.launch {
             try {
                 isloading.value = true
                 repository.getAll(authService.email!!).collect { items ->
-                    _donations.value = items
+                    _games.value = items
                     iserror.value = false
                     isloading.value = false
                 }
-                Timber.i("DVM RVM = : ${_donations.value}")
+                Timber.i("DVM RVM = : ${_games.value}")
             }
             catch(e:Exception) {
                 iserror.value = true
@@ -49,9 +49,8 @@ constructor(private val repository: FirestoreService,
         }
     }
 
-    fun deleteDonation(donation: DonationModel)
+    fun deleteGames(game: RugbyGameModel)
             = viewModelScope.launch {
-        repository.delete(authService.email!!,donation._id)
+        repository.delete(authService.email!!,game._id)
     }
 }
-
