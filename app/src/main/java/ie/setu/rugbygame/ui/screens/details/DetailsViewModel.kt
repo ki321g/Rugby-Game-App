@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ie.setu.rugbygame.data.model.DonationModel
-import ie.setu.rugbygame.data.api.RetrofitRepository
 import ie.setu.rugbygame.firebase.services.AuthService
 import ie.setu.rugbygame.firebase.services.FirestoreService
 import kotlinx.coroutines.launch
