@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.rugbygame.R
 import ie.setu.rugbygame.data.model.RugbyGameModel
-import ie.setu.rugbygame.data.model.fakeDonations
 import ie.setu.rugbygame.data.model.fakeGames
 import ie.setu.rugbygame.ui.screens.game.GameViewModel
 import ie.setu.rugbygame.ui.screens.map.MapViewModel
