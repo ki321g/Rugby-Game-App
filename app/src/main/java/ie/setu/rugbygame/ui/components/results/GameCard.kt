@@ -58,7 +58,7 @@ import java.util.Date
 @Composable
 fun GameCard(
     paymentType: String,
-    paymentAmount: Int,
+    paymentAmount: String,
     message: String,
     dateCreated: String,
     dateModified: String,
@@ -88,7 +88,7 @@ fun GameCard(
 @Composable
 private fun GameCardContent(
     paymentType: String,
-    paymentAmount: Int,
+    paymentAmount: String,
     message: String,
     dateCreated: String,
     dateModified: String,
@@ -219,8 +219,8 @@ fun showDeleteAlert(
 fun GameCardPreview() {
     RugbyScoreTheme {
         GameCard(
-            paymentType = "Direct",
-            paymentAmount = 100,
+            paymentType = "HomeTeam",
+            paymentAmount = "AwayTeam",
             message = """
                 A message entered 
                 by the user..."

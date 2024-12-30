@@ -24,13 +24,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.data.model.fakeGames
-import ie.setu.rugbygame.ui.components.game.AmountPicker
 import ie.setu.rugbygame.ui.components.game.AwayTeamNameInput
-import ie.setu.rugbygame.ui.components.game.DonateButton
 import ie.setu.rugbygame.ui.components.game.HomeTeamNameInput
-import ie.setu.rugbygame.ui.components.game.MessageInput
-import ie.setu.rugbygame.ui.components.game.ProgressBar
-import ie.setu.rugbygame.ui.components.game.RadioButtonGroup
 import ie.setu.rugbygame.ui.components.game.SaveButton
 import ie.setu.rugbygame.ui.components.game.ScoreBoard
 import ie.setu.rugbygame.ui.components.game.ScoreCalculator
@@ -218,16 +213,11 @@ fun PreviewGameScreen(modifier: Modifier = Modifier,
                 modifier = modifier,
                 onHomeTeamNameChange = { homeTeam = it }
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
             // Away Team Details
             AwayTeamNameInput(
                 modifier = modifier,
                 onAwayTeamNameChange = { awayTeam = it }
             )
-
-            Spacer(modifier = Modifier.height(32.dp))
 
             // Score Board Details
             ScoreBoard(

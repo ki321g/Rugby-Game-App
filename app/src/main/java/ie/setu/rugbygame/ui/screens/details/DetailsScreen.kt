@@ -88,58 +88,58 @@ fun DetailsScreen(
             ),
         )
         {
-            //Payment Type Field
-            ReadOnlyTextField(value = game.paymentType,
-                label = "Payment Type")
-            //Payment Amount Field
-            ReadOnlyTextField(value = "€" + game.paymentAmount.toString(),
-                label = "Payment Amount")
+            // Home Team Name Field T
+            ReadOnlyTextField(value = game.homeTeam,
+                label = "Home Team")
+            // Away Team Name Field
+            ReadOnlyTextField(value = game.awayTeam,
+                label = "Away Team")
             //Date Donated Field
-            ReadOnlyTextField(value = game.dateDonated.toString(),
-                label = "Date Donated")
+//            ReadOnlyTextField(value = game.dateDonated.toString(),
+//                label = "Date Donated")
             //Message Field
-            text = game.message
-            OutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                value = text,
-                onValueChange = {
-                    text = it
-                    validate(text)
-                    game.message = text
-                },
-                maxLines = 2,
-                label = { Text(text = "Message") },
-                isError = isEmptyError || isShortError,
-                supportingText = {
-                    if (isEmptyError) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = errorEmptyMessage,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                    else
-                        if (isShortError) {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = errorShortMessage,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                },
-                trailingIcon = {
-                    if (isEmptyError || isShortError)
-                        Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
-                    else
-                        Icon(
-                            Icons.Default.Edit, contentDescription = "add/edit",
-                            tint = Color.Black
-                        )
-                },
-                keyboardActions = KeyboardActions { validate(text) },
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-                )
-            )
+////            text = game.message
+//            OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+//                value = text,
+//                onValueChange = {
+//                    text = it
+//                    validate(text)
+//                    game.message = text
+//                },
+//                maxLines = 2,
+//                label = { Text(text = "Message") },
+//                isError = isEmptyError || isShortError,
+//                supportingText = {
+//                    if (isEmptyError) {
+//                        Text(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            text = errorEmptyMessage,
+//                            color = MaterialTheme.colorScheme.error
+//                        )
+//                    }
+//                    else
+//                        if (isShortError) {
+//                            Text(
+//                                modifier = Modifier.fillMaxWidth(),
+//                                text = errorShortMessage,
+//                                color = MaterialTheme.colorScheme.error
+//                            )
+//                        }
+//                },
+//                trailingIcon = {
+//                    if (isEmptyError || isShortError)
+//                        Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
+//                    else
+//                        Icon(
+//                            Icons.Default.Edit, contentDescription = "add/edit",
+//                            tint = Color.Black
+//                        )
+//                },
+//                keyboardActions = KeyboardActions { validate(text) },
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+//                )
+//            )
             //End of Message Field
             Spacer(modifier.height(height = 48.dp))
             Button(
@@ -209,9 +209,9 @@ fun PreviewDetailScreen(modifier: Modifier) {
         {
             //Payment Type Field
             OutlinedTextField(modifier = modifier.fillMaxWidth(),
-                value = game.paymentType,
+                value = game.homeTeam,
                 onValueChange = { },
-                label = { Text(text = "Payment Type") },
+                label = { Text(text = "Home Team") },
                 readOnly = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
@@ -219,66 +219,66 @@ fun PreviewDetailScreen(modifier: Modifier) {
             )
             //Payment Amount Field
             OutlinedTextField(modifier = modifier.fillMaxWidth(),
-                value = "€" + game.paymentAmount.toString(),
+                value = game.awayTeam,
                 onValueChange = { },
-                label = { Text(text = "Payment Amount") },
+                label = { Text(text = "Away Teamt") },
                 readOnly = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 )
             )
-            //Date Donated Field
-            OutlinedTextField(modifier = modifier.fillMaxWidth(),
-                value = game.dateDonated.toString(),
-                onValueChange = { },
-                label = { Text(text = "Date Donated") },
-                readOnly = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-                )
-            )
-            text = game.message
-            OutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                value = text,
-                onValueChange = {
-                    text = it
-                    validate(text)
-                    game.message = text
-                },
-                maxLines = 2,
-                label = { Text(text = "Message") },
-                isError = isEmptyError || isShortError,
-                supportingText = {
-                    if (isEmptyError) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = errorEmptyMessage,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                    else
-                        if (isShortError) {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = errorShortMessage,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                },
-                trailingIcon = {
-                    if (isEmptyError || isShortError)
-                        Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
-                    else
-                        Icon(
-                            Icons.Default.Edit, contentDescription = "add/edit",
-                            tint = Color.Black
-                        )
-                },
-                keyboardActions = KeyboardActions { validate(text) },
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-                )
-            )
+//            //Date Donated Field
+//            OutlinedTextField(modifier = modifier.fillMaxWidth(),
+//                value = game.dateDonated.toString(),
+//                onValueChange = { },
+//                label = { Text(text = "Date Donated") },
+//                readOnly = true,
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+//                )
+//            )
+//            text = game.message
+//            OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+//                value = text,
+//                onValueChange = {
+//                    text = it
+//                    validate(text)
+//                    game.message = text
+//                },
+//                maxLines = 2,
+//                label = { Text(text = "Message") },
+//                isError = isEmptyError || isShortError,
+//                supportingText = {
+//                    if (isEmptyError) {
+//                        Text(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            text = errorEmptyMessage,
+//                            color = MaterialTheme.colorScheme.error
+//                        )
+//                    }
+//                    else
+//                        if (isShortError) {
+//                            Text(
+//                                modifier = Modifier.fillMaxWidth(),
+//                                text = errorShortMessage,
+//                                color = MaterialTheme.colorScheme.error
+//                            )
+//                        }
+//                },
+//                trailingIcon = {
+//                    if (isEmptyError || isShortError)
+//                        Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
+//                    else
+//                        Icon(
+//                            Icons.Default.Edit, contentDescription = "add/edit",
+//                            tint = Color.Black
+//                        )
+//                },
+//                keyboardActions = KeyboardActions { validate(text) },
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+//                )
+//            )
             Spacer(modifier.height(height = 48.dp))
             Button(
                 onClick = {
