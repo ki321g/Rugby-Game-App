@@ -24,14 +24,14 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import ie.setu.rugbygame.ui.components.general.CustomMarker
-import ie.setu.rugbygame.ui.screens.report.ReportViewModel
+import ie.setu.rugbygame.ui.screens.results.ResultsViewModel
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import timber.log.Timber
 
 @Composable
 fun MapScreen(
     mapViewModel: MapViewModel = hiltViewModel(),
-    reportViewModel: ReportViewModel = hiltViewModel(),
+    resultsViewModel: ResultsViewModel = hiltViewModel(),
     permissions: Boolean,
 ) {
     val uiSettings by remember { mutableStateOf(MapUiSettings(
@@ -48,7 +48,7 @@ fun MapScreen(
     }
 
     val currentLocation = mapViewModel.currentLatLng.collectAsState().value
-    val donations = reportViewModel.uiDonations.collectAsState().value
+    val donations = resultsViewModel.uiGames.collectAsState().value
 
     Timber.i("MAP LAT/LNG PERMISSIONS $permissions ")
 

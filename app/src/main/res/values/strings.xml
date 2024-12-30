@@ -1,7 +1,5 @@
 <resources>
         <string name="app_name">RugbyGame</string>
-        <string name="donateTitle">Welcome Homer</string>
-        <string name="donateSubtitle">Please Give Generously</string>
         <string name="donateButton">Donate</string>
         <string name="paypal">PayPal</string>
         <string name="direct">Direct</string>
@@ -16,7 +14,6 @@
         <string name="enter_message">Enter Message</string>
         <string name="show_less">Show Less</string>
         <string name="show_more">Show More</string>
-        <string name="empty_list">No Donations Yet - Go make a Donation!</string>
         <string name="about_title">Homer for President !!</string>
         <string name="about_message">Hi, I\'m Homer\n\nPlease vote for me.\n\n Please Please Please Please!!</string>
         <string name="confirm_delete">Confirm Delete?</string>
@@ -40,4 +37,10 @@
         <string name="forgot_password">Forgot your password</string>
         <string name="home">Home</string>
         <string name="logout">Logout</string>
+
+
+        <string name="resultsTitle">Game Results</string>
+        <string name="gameTitle">Welcome</string>
+        <string name="gameSubtitle">Please Play Fairly</string>
+        <string name="empty_list">No Games Yet - Go add a Game!</string>
 </resources>

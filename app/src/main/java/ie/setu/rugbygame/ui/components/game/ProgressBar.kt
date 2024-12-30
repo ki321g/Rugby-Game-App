@@ -1,4 +1,4 @@
-package ie.setu.rugbygame.ui.components.donate
+package ie.setu.rugbygame.ui.components.game
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,10 +20,10 @@ import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 
 @Composable
 fun ProgressBar(modifier: Modifier = Modifier,
-                totalDonated: Int,) {
+                totalGamed: Int,) {
     var currentProgress by remember { mutableFloatStateOf(0f) }
 
-    currentProgress = totalDonated / 10000f
+    currentProgress = totalGamed / 10000f
 
     LinearProgressIndicator(
         progress = { currentProgress },
@@ -42,6 +42,6 @@ fun ProgressBar(modifier: Modifier = Modifier,
 @Composable
 fun ProgressBarPreview(){
     RugbyScoreTheme {
-        ProgressBar(Modifier, totalDonated = 1000)
+        ProgressBar(Modifier, totalGamed = 1000)
     }
 }

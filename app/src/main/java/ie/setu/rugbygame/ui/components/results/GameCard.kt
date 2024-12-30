@@ -1,4 +1,4 @@
-package ie.setu.rugbygame.ui.components.report
+package ie.setu.rugbygame.ui.components.results
 
 import android.net.Uri
 import androidx.compose.animation.animateContentSize
@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import ie.setu.rugbygame.R
+import ie.setu.rugbygame.ui.components.results.GameCard
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import ie.setu.rugbygame.ui.theme.endGradientColor
 import ie.setu.rugbygame.ui.theme.startGradientColor
@@ -55,14 +56,14 @@ import java.text.DateFormat
 import java.util.Date
 
 @Composable
-fun DonationCard(
+fun GameCard(
     paymentType: String,
     paymentAmount: Int,
     message: String,
     dateCreated: String,
     dateModified: String,
     onClickDelete: () -> Unit,
-    onClickDonationDetails: () -> Unit,
+    onClickGameDetails: () -> Unit,
     photoUri: Uri
 ) {
     Card(
@@ -72,27 +73,27 @@ fun DonationCard(
         ),
         modifier = Modifier.padding(vertical = 2.dp, horizontal = 2.dp)
     ) {
-        DonationCardContent(paymentType,
+        GameCardContent(paymentType,
             paymentAmount,
             message,
             dateCreated,
             dateModified,
             onClickDelete,
-            onClickDonationDetails,
+            onClickGameDetails,
             photoUri
         )
     }
 }
 
 @Composable
-private fun DonationCardContent(
+private fun GameCardContent(
     paymentType: String,
     paymentAmount: Int,
     message: String,
     dateCreated: String,
     dateModified: String,
     onClickDelete: () -> Unit,
-    onClickDonationDetails: () -> Unit,
+    onClickGameDetails: () -> Unit,
     photoUri: Uri
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -147,7 +148,7 @@ private fun DonationCardContent(
                 )
             }
             Text(
-                text = "Donated $dateCreated", style = MaterialTheme.typography.labelSmall
+                text = "Date $dateCreated", style = MaterialTheme.typography.labelSmall
             )
             Text(
                 text = "Modified $dateModified", style = MaterialTheme.typography.labelSmall
@@ -156,7 +157,7 @@ private fun DonationCardContent(
                 Text(modifier = Modifier.padding(vertical = 16.dp), text = message)
                 Row(modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween) {
-                    FilledTonalButton(onClick = onClickDonationDetails) {
+                    FilledTonalButton(onClick = onClickGameDetails) {
                         Text(text = "Show More")
                     }
 
@@ -215,9 +216,9 @@ fun showDeleteAlert(
 
 @Preview
 @Composable
-fun DonationCardPreview() {
+fun GameCardPreview() {
     RugbyScoreTheme {
-        DonationCard(
+        GameCard(
             paymentType = "Direct",
             paymentAmount = 100,
             message = """
@@ -227,7 +228,7 @@ fun DonationCardPreview() {
             dateCreated = DateFormat.getDateTimeInstance().format(Date()),
             dateModified = DateFormat.getDateTimeInstance().format(Date()),
             onClickDelete = { },
-            onClickDonationDetails = {},
+            onClickGameDetails = {},
             photoUri = Uri.EMPTY
         )
     }

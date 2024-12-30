@@ -1,4 +1,4 @@
-package ie.setu.rugbygame.ui.components.donate
+package ie.setu.rugbygame.ui.components.game
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Row
@@ -29,31 +29,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.rugbygame.R
-import ie.setu.rugbygame.data.model.DonationModel
-import ie.setu.rugbygame.data.model.fakeDonations
-import ie.setu.rugbygame.ui.components.general.ShowLoader
-import ie.setu.rugbygame.ui.screens.donate.DonateViewModel
+import ie.setu.rugbygame.data.model.RugbyGameModel
+import ie.setu.rugbygame.data.model.fakeGames
+import ie.setu.rugbygame.ui.screens.game.GameViewModel
 import ie.setu.rugbygame.ui.screens.map.MapViewModel
-import ie.setu.rugbygame.ui.screens.report.ReportViewModel
+import ie.setu.rugbygame.ui.screens.results.ResultsViewModel
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import timber.log.Timber
 
 @Composable
 fun DonateButton(
     modifier: Modifier = Modifier,
-    donation: DonationModel,
-    donateViewModel: DonateViewModel = hiltViewModel(),
-    reportViewModel: ReportViewModel = hiltViewModel(),
+    game: RugbyGameModel,
+    gameViewModel: GameViewModel = hiltViewModel(),
+    resultsViewModel: ResultsViewModel = hiltViewModel(),
     mapViewModel: MapViewModel = hiltViewModel(),
     onTotalDonatedChange: (Int) -> Unit
 ) {
-    val donations = reportViewModel.uiDonations.collectAsState().value
-    var totalDonated = donations.sumOf { it.paymentAmount }
+    val games = resultsViewModel.uiGames.collectAsState().value
+    var totalDonated = games.sumOf { it.paymentAmount }
     val context = LocalContext.current
-    val message = stringResource(R.string.limitExceeded,donation.paymentAmount)
+    val message = stringResource(R.string.limitExceeded,game.paymentAmount)
 
-    val isError = donateViewModel.isErr.value
-    val error = donateViewModel.error.value
+    val isError = gameViewModel.isErr.value
+    val error = gameViewModel.error.value
     val locationLatLng = mapViewModel.currentLatLng.collectAsState().value
 
     LaunchedEffect(mapViewModel.currentLatLng){
@@ -66,14 +65,14 @@ fun DonateButton(
     Row {
         Button(
             onClick = {
-                if(totalDonated + donation.paymentAmount <= 10000) {
-                    totalDonated+=donation.paymentAmount
+                if(totalDonated + game.paymentAmount <= 10000) {
+                    totalDonated+=game.paymentAmount
                     onTotalDonatedChange(totalDonated)
-                    val donationLatLng = donation.copy(
+                    val gameLatLng = game.copy(
                         latitude = locationLatLng.latitude,
                         longitude = locationLatLng.longitude
                     )
-                    donateViewModel.insert(donationLatLng)
+                    gameViewModel.insert(gameLatLng)
                 }
                 else
                     Toast.makeText(context,message,
@@ -121,7 +120,7 @@ fun DonateButton(
         Toast.makeText(context,"Unable to Donate at this Time...",
             Toast.LENGTH_SHORT).show()
     else
-        reportViewModel.getDonations()
+        resultsViewModel.getGames()
 }
 
 @Preview(showBackground = true)
@@ -130,8 +129,8 @@ fun DonateButtonPreview() {
     RugbyScoreTheme {
         PreviewDonateButton(
             Modifier,
-            DonationModel(),
-            donations = fakeDonations.toMutableStateList()
+            RugbyGameModel(),
+            games = fakeGames.toMutableStateList()
         ) {}
     }
 }
@@ -139,24 +138,24 @@ fun DonateButtonPreview() {
 @Composable
 fun PreviewDonateButton(
     modifier: Modifier = Modifier,
-    donation: DonationModel,
-    donations: SnapshotStateList<DonationModel>,
+    game: RugbyGameModel,
+    games: SnapshotStateList<RugbyGameModel>,
     onTotalDonatedChange: (Int) -> Unit
 ) {
 
-    var totalDonated = donations.sumOf { it.paymentAmount }
+    var totalDonated = games.sumOf { it.paymentAmount }
     val context = LocalContext.current
-    val message = stringResource(R.string.limitExceeded,donation.paymentAmount)
+    val message = stringResource(R.string.limitExceeded,game.paymentAmount)
 
     Row {
         Button(
             onClick = {
-                if(totalDonated + donation.paymentAmount <= 10000) {
-                    totalDonated+=donation.paymentAmount
+                if(totalDonated + game.paymentAmount <= 10000) {
+                    totalDonated+=game.paymentAmount
                     onTotalDonatedChange(totalDonated)
-                    donations.add(donation)
-                    Timber.i("Donation info : $donation")
-                    Timber.i("Donation List info : ${donations.toList()}")
+                    games.add(game)
+                    Timber.i("Donation info : $game")
+                    Timber.i("Donation List info : ${games.toList()}")
                 }
                 else
                     Toast.makeText(context,message,

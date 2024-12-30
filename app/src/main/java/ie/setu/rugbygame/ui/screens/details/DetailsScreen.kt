@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ie.setu.rugbygame.data.model.DonationModel
+import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.ui.components.details.DetailsScreenText
 import ie.setu.rugbygame.ui.components.details.ReadOnlyTextField
 import ie.setu.rugbygame.ui.components.general.ShowLoader
@@ -48,7 +48,7 @@ fun DetailsScreen(
     modifier: Modifier = Modifier,
     detailViewModel: DetailsViewModel = hiltViewModel()
 ) {
-    val donation = detailViewModel.donation.value
+    val game = detailViewModel.game.value
     val errorEmptyMessage = "Message Cannot be Empty..."
     val errorShortMessage = "Message must be at least 2 characters"
     var text by rememberSaveable { mutableStateOf("") }
@@ -89,22 +89,22 @@ fun DetailsScreen(
         )
         {
             //Payment Type Field
-            ReadOnlyTextField(value = donation.paymentType,
+            ReadOnlyTextField(value = game.paymentType,
                 label = "Payment Type")
             //Payment Amount Field
-            ReadOnlyTextField(value = "€" + donation.paymentAmount.toString(),
+            ReadOnlyTextField(value = "€" + game.paymentAmount.toString(),
                 label = "Payment Amount")
             //Date Donated Field
-            ReadOnlyTextField(value = donation.dateDonated.toString(),
+            ReadOnlyTextField(value = game.dateDonated.toString(),
                 label = "Date Donated")
             //Message Field
-            text = donation.message
+            text = game.message
             OutlinedTextField(modifier = Modifier.fillMaxWidth(),
                 value = text,
                 onValueChange = {
                     text = it
                     validate(text)
-                    donation.message = text
+                    game.message = text
                 },
                 maxLines = 2,
                 label = { Text(text = "Message") },
@@ -144,7 +144,7 @@ fun DetailsScreen(
             Spacer(modifier.height(height = 48.dp))
             Button(
                 onClick = {
-                    detailViewModel.updateDonation(donation)
+                    detailViewModel.updateGame(game)
                     onMessageChanged = false
                 },
                 elevation = ButtonDefaults.buttonElevation(20.dp),
@@ -174,7 +174,7 @@ fun DetailScreenPreview() {
 @Composable
 fun PreviewDetailScreen(modifier: Modifier) {
 
-    val donation = DonationModel()
+    val game = RugbyGameModel()
     val errorEmptyMessage = "Message Cannot be Empty..."
     val errorShortMessage = "Message must be at least 2 characters"
     var text by rememberSaveable { mutableStateOf("") }
@@ -209,7 +209,7 @@ fun PreviewDetailScreen(modifier: Modifier) {
         {
             //Payment Type Field
             OutlinedTextField(modifier = modifier.fillMaxWidth(),
-                value = donation.paymentType,
+                value = game.paymentType,
                 onValueChange = { },
                 label = { Text(text = "Payment Type") },
                 readOnly = true,
@@ -219,7 +219,7 @@ fun PreviewDetailScreen(modifier: Modifier) {
             )
             //Payment Amount Field
             OutlinedTextField(modifier = modifier.fillMaxWidth(),
-                value = "€" + donation.paymentAmount.toString(),
+                value = "€" + game.paymentAmount.toString(),
                 onValueChange = { },
                 label = { Text(text = "Payment Amount") },
                 readOnly = true,
@@ -229,7 +229,7 @@ fun PreviewDetailScreen(modifier: Modifier) {
             )
             //Date Donated Field
             OutlinedTextField(modifier = modifier.fillMaxWidth(),
-                value = donation.dateDonated.toString(),
+                value = game.dateDonated.toString(),
                 onValueChange = { },
                 label = { Text(text = "Date Donated") },
                 readOnly = true,
@@ -237,15 +237,13 @@ fun PreviewDetailScreen(modifier: Modifier) {
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 )
             )
-            //  Log.i("VM Call","Message is : ${donation.message}")
-            //Message Field
-            text = donation.message
+            text = game.message
             OutlinedTextField(modifier = Modifier.fillMaxWidth(),
                 value = text,
                 onValueChange = {
                     text = it
                     validate(text)
-                    donation.message = text
+                    game.message = text
                 },
                 maxLines = 2,
                 label = { Text(text = "Message") },
