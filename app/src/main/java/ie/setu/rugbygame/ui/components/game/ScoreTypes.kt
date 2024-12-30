@@ -14,6 +14,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.ui.screens.game.GameViewModel
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun ScoreTypes(
@@ -24,6 +26,7 @@ fun ScoreTypes(
     onHomeScoreChange: (Int) -> Unit,
     onAwayScoreChange: (Int) -> Unit
 ) {
+    val context = LocalContext.current
     var homeScore = ScoreCalculator.calculateTotalScore(
         tries = game.homeTries,
         conversions = game.homeConversions,
@@ -59,6 +62,7 @@ fun ScoreTypes(
                             dropGoals = game.homeDropGoals
                         )
                         onHomeScoreChange(homeScore)
+                        Toast.makeText(context,game.homeTries.toString(),Toast.LENGTH_SHORT).show()
                     },
                     onDecrement = {
                         if (game.homeTries > 0) {
@@ -70,6 +74,7 @@ fun ScoreTypes(
                                 dropGoals = game.homeDropGoals
                             )
                             onHomeScoreChange(homeScore)
+                            Toast.makeText(context,game.homeTries.toString(),Toast.LENGTH_SHORT).show()
                         }
                     }
                 )

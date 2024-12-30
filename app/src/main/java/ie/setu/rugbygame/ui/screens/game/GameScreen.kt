@@ -81,7 +81,7 @@ fun GameScreen(modifier: Modifier = Modifier,
                 start = 24.dp,
                 end = 24.dp
             ),
-            verticalArrangement = Arrangement.spacedBy(30.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             // Welcome Text
             WelcomeText()
@@ -92,7 +92,7 @@ fun GameScreen(modifier: Modifier = Modifier,
                 onHomeTeamNameChange = { homeTeam = it }
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+//            Spacer(modifier = Modifier.height(16.dp))
 
             // Away Team Details
             AwayTeamNameInput(
@@ -100,7 +100,7 @@ fun GameScreen(modifier: Modifier = Modifier,
                 onAwayTeamNameChange = { awayTeam = it }
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+//            Spacer(modifier = Modifier.height(32.dp))
 
             // Score Board Details
             ScoreBoard(
@@ -108,10 +108,11 @@ fun GameScreen(modifier: Modifier = Modifier,
                 awayTeam = "Away",
                 homeScore = homeScore,
                 awayScore = awayScore,
-                enabled = isGameStarted,
+//                enabled = isGameStarted,
+                enabled = true,
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+//            Spacer(modifier = Modifier.height(32.dp))
 
             ScoreTypes (
                 modifier = modifier,
@@ -127,7 +128,8 @@ fun GameScreen(modifier: Modifier = Modifier,
                     awayPenalties = awayPenalties,
                     awayDropGoals = awayDropGoals
                 ),
-                enabled = isGameStarted,
+//                enabled = isGameStarted,
+                enabled = true,
                 onHomeScoreChange = { homeScore = it },
                 onAwayScoreChange = { awayScore = it }
             )
