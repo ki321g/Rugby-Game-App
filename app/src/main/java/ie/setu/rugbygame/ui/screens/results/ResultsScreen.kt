@@ -1,4 +1,5 @@
-package ie.setu.rugbygame.ui.screens.report
+package ie.setu.rugbygame.ui.screens.results
+
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,33 +20,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.rugbygame.R
-import ie.setu.rugbygame.data.model.DonationModel
-import ie.setu.rugbygame.data.model.fakeDonations
+import ie.setu.rugbygame.data.model.RugbyGameModel
+import ie.setu.rugbygame.data.model.fakeGames
 import ie.setu.rugbygame.ui.components.general.Centre
 import ie.setu.rugbygame.ui.components.general.ShowError
 import ie.setu.rugbygame.ui.components.general.ShowLoader
 import ie.setu.rugbygame.ui.components.general.ShowRefreshList
-import ie.setu.rugbygame.ui.components.report.DonationCardList
-import ie.setu.rugbygame.ui.components.report.ReportText
+import ie.setu.rugbygame.ui.components.results.ResultsText
+import ie.setu.rugbygame.ui.components.results.GameCardList
+import ie.setu.rugbygame.ui.screens.results.ResultsViewModel
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import timber.log.Timber
 
 
 @Composable
-fun ReportScreen(modifier: Modifier = Modifier,
-                 onClickDonationDetails: (String) -> Unit,
-                 reportViewModel: ReportViewModel = hiltViewModel()) {
+fun ResultsScreen(modifier: Modifier = Modifier,
+                  onClickGameDetails: (String) -> Unit,
+                 resultsViewModel: ResultsViewModel = hiltViewModel()) {
 
-    val donations = reportViewModel.uiDonations.collectAsState().value
-    val isError = reportViewModel.iserror.value
-    val error = reportViewModel.error.value
-    val isLoading = reportViewModel.isloading.value
+    val games = resultsViewModel.uiGames.collectAsState().value
+    val isError = resultsViewModel.iserror.value
+    val error = resultsViewModel.error.value
+    val isLoading = resultsViewModel.isloading.value
 
-    Timber.i("RS : Donations List = $donations")
-
-//    LaunchedEffect(Unit) {
-//        reportViewModel.getDonations()
-//    }
+    Timber.i("RS : Games List = $games")
 
     Column {
         Column(
@@ -54,11 +52,9 @@ fun ReportScreen(modifier: Modifier = Modifier,
                 end = 24.dp
             ),
         ) {
-            if(isLoading) ShowLoader("Loading Donations...")
-            ReportText()
-//            if(!isError)
-//                ShowRefreshList(onClick = { reportViewModel.getDonations() })
-            if (donations.isEmpty() && !isError)
+            if(isLoading) ShowLoader("Loading Games...")
+            ResultsText()
+            if (games.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {
                     Text(
                         color = MaterialTheme.colorScheme.secondary,
@@ -70,19 +66,18 @@ fun ReportScreen(modifier: Modifier = Modifier,
                     )
                 }
             if (!isError) {
-                DonationCardList(
-                    donations = donations,
-                    onClickDonationDetails = onClickDonationDetails,
-                    onDeleteDonation = { donation: DonationModel ->
-                        reportViewModel.deleteDonation(donation)
+                GameCardList(
+                    games = games,
+                    onClickGameDetails = onClickGameDetails,
+                    onDeleteGame = { game: RugbyGameModel ->
+                        resultsViewModel.deleteGames(game)
                     },
-//                    onRefreshList = { reportViewModel.getDonations() }
                 )
             }
             if (isError) {
                 ShowError(headline = error.message!! + " error...",
                     subtitle = error.toString(),
-                    onClick = { reportViewModel.getDonations() })
+                    onClick = { resultsViewModel.getGames() })
             }
         }
 
@@ -91,17 +86,17 @@ fun ReportScreen(modifier: Modifier = Modifier,
 
 @Preview(showBackground = true)
 @Composable
-fun ReportScreenPreview() {
+fun ResultsScreenPreview() {
     RugbyScoreTheme {
-        PreviewReportScreen( modifier = Modifier,
-            donations = fakeDonations.toMutableStateList()
+        PreviewResultsScreen( modifier = Modifier,
+            games = fakeGames.toMutableStateList()
         )
     }
 }
 
 @Composable
-fun PreviewReportScreen(modifier: Modifier = Modifier,
-                        donations: SnapshotStateList<DonationModel>
+fun PreviewResultsScreen(modifier: Modifier = Modifier,
+                        games: SnapshotStateList<RugbyGameModel>
 ) {
 
     Column {
@@ -111,8 +106,8 @@ fun PreviewReportScreen(modifier: Modifier = Modifier,
                 end = 24.dp
             ),
         ) {
-            ReportText()
-            if(donations.isEmpty())
+            ResultsText()
+            if(games.isEmpty())
                 Centre(Modifier.fillMaxSize()) {
                     Text(color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.Bold,
@@ -123,10 +118,10 @@ fun PreviewReportScreen(modifier: Modifier = Modifier,
                     )
                 }
             else
-                DonationCardList(
-                    donations = donations,
-                    onDeleteDonation = {},
-                    onClickDonationDetails = { }
+                GameCardList(
+                    games = games,
+                    onDeleteGame = {},
+                    onClickGameDetails = { }
                 )
         }
     }

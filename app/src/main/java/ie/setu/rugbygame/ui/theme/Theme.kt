@@ -43,6 +43,13 @@ val endGradientColor = Color(0xFF005cb2)
 
 val gStartGradientColor = Color(0xFF013B6E)
 val gEndGradientColor = Color(0xFF2189EB)
+
+val mStartGradientColor = Color(0xFF2191F4)
+val mEndGradientColor = Color(0xFF0473DC)
+
+val cStartGradientColor = Color(0xFFED96E8)
+val cEndGradientColor = Color(0xFFD474C8)
+
 @Composable
 fun RugbyScoreTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

@@ -1,4 +1,4 @@
-package ie.setu.rugbygame.ui.components.donate
+package ie.setu.rugbygame.ui.components.game
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

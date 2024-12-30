@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ie.setu.rugbygame.navigation.AppDestination
-import ie.setu.rugbygame.navigation.Donate
+import ie.setu.rugbygame.navigation.Game
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,7 +97,7 @@ fun TopAppBarPreview() {
     RugbyScoreTheme {
         TopAppBarProvider(
             navController = rememberNavController(),
-            Donate,
+            Game,
             true,
             email = "dave@gmail.com",
             name = "userName!!"

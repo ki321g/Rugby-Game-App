@@ -1,4 +1,4 @@
-package ie.setu.rugbygame.ui.components.donate
+package ie.setu.rugbygame.ui.components.game
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

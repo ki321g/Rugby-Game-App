@@ -8,10 +8,13 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Details
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import ie.setu.rugbygame.firebase.services.Game
+
 
 interface AppDestination {
     val icon: ImageVector
@@ -19,16 +22,16 @@ interface AppDestination {
     val route: String
 }
 
-object Report : AppDestination {
+object Results : AppDestination {
     override val icon = Icons.AutoMirrored.Filled.List
-    override val label = "Report"
-    override val route = "report"
+    override val label = "Results"
+    override val route = "results"
 }
 
-object Donate : AppDestination {
+object Game : AppDestination {
     override val icon = Icons.Filled.AddCircle
-    override val label = "Donate"
-    override val route = "donate"
+    override val label = "Game"
+    override val route = "game"
 }
 
 object About : AppDestination {
@@ -71,8 +74,14 @@ object Register : AppDestination {
     override val route = "Register"
 }
 
-val bottomAppBarDestinations = listOf(Donate, Report, About, Profile)
+object Map : AppDestination {
+    override val icon = Icons.Filled.LocationOn
+    override val label = "Map"
+    override val route = "map"
+}
+
+val bottomAppBarDestinations = listOf(Game, Map, Results, About, Profile)
 val userSignedOutDestinations = listOf(Login, Register)
-val allDestinations = listOf(Report, Donate, About, Details, Home, Profile, Login, Register)
+val allDestinations = listOf(About, Details, Home, Profile, Login, Register, Map, Results, Game)
 
 
