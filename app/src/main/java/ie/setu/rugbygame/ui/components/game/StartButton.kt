@@ -1,7 +1,9 @@
 package ie.setu.rugbygame.ui.components.game
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -24,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import ie.setu.rugbygame.R
 import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.data.model.fakeGames
@@ -34,13 +37,14 @@ import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import timber.log.Timber
 
 @Composable
-fun SaveButton(
+fun StartButton(
     modifier: Modifier = Modifier,
     game: RugbyGameModel,
     gameViewModel: GameViewModel = hiltViewModel(),
     resultsViewModel: ResultsViewModel = hiltViewModel(),
     mapViewModel: MapViewModel = hiltViewModel(),
-    onIsGameStartedChange: (Boolean) -> Unit
+    onIsGameStartedChange: (Boolean) -> Unit,
+//    onClickGameDetails: (String) -> Unit
 ) {
     val isGameStarted by gameViewModel.isGameStarted.collectAsState()
     val games = resultsViewModel.uiGames.collectAsState().value
@@ -58,6 +62,8 @@ fun SaveButton(
             "lat/Lng: " + "$locationLatLng ")
 
     Button(
+        modifier = Modifier
+            .fillMaxWidth(), // Makes button full width
         onClick = {
                 val gameLatLng = game.copy(
                     latitude = locationLatLng.latitude,
@@ -66,13 +72,21 @@ fun SaveButton(
                 gameViewModel.insert(gameLatLng)
                 gameViewModel.startGame()
                 onIsGameStartedChange(isGameStarted)
+//                val latestId = gameViewModel.uiLatestGame.value.firstOrNull()?._id
+//                onClickGameDetails(latestId.toString())
+//                val latestGame = gameViewModel.getLatestGames()
+//                onClickGameDetails(latestGame._ID.toString())
         },
-        elevation = ButtonDefaults.buttonElevation(20.dp)
+        elevation = ButtonDefaults.buttonElevation(20.dp),
+        contentPadding = PaddingValues(
+            start = 24.dp,
+            end = 24.dp
+        )
     ) {
-        Icon(Icons.Default.Add, contentDescription = "Save Game")
+        Icon(Icons.Default.Add, contentDescription = "Start Game")
         Spacer(modifier.width(width = 4.dp))
         Text(
-            text = stringResource(R.string.saveButton),
+            text = stringResource(R.string.startButton),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = Color.White
@@ -82,7 +96,7 @@ fun SaveButton(
     Timber.i("DVM Button = : ${error.message}")
     //Required to refresh our 'totalDonated'
     if(isError)
-        Toast.makeText(context,"Unable to Save Game at this Time...",
+        Toast.makeText(context,"Unable to Start Game at this Time...",
             Toast.LENGTH_SHORT).show()
     else
         resultsViewModel.getGames()
@@ -90,9 +104,9 @@ fun SaveButton(
 
 @Preview(showBackground = true)
 @Composable
-fun SaveButtonPreview() {
+fun StartButtonPreview() {
     RugbyScoreTheme {
-        PreviewSaveButton(
+        PreviewStartButton(
             Modifier,
             RugbyGameModel(),
             games = fakeGames.toMutableStateList()
@@ -101,7 +115,7 @@ fun SaveButtonPreview() {
 }
 
 @Composable
-fun PreviewSaveButton(
+fun PreviewStartButton(
     modifier: Modifier = Modifier,
     game: RugbyGameModel,
     games: SnapshotStateList<RugbyGameModel>
@@ -112,12 +126,16 @@ fun PreviewSaveButton(
                 Timber.i("Game info : $game")
                 Timber.i("Game List info : ${games.toList()}")
         },
-        elevation = ButtonDefaults.buttonElevation(20.dp)
+        elevation = ButtonDefaults.buttonElevation(20.dp),
+        contentPadding = PaddingValues(
+            start = 24.dp,
+            end = 24.dp
+        )
     ) {
         Icon(Icons.Default.Add, contentDescription = "Save Game")
         Spacer(modifier.width(width = 4.dp))
         Text(
-            text = stringResource(R.string.saveButton),
+            text = stringResource(R.string.startButton),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = Color.White
