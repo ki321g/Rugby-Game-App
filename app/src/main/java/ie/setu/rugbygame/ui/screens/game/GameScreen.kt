@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,28 +21,64 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.data.model.fakeGames
 import ie.setu.rugbygame.ui.components.game.AmountPicker
+import ie.setu.rugbygame.ui.components.game.AwayTeamNameInput
 import ie.setu.rugbygame.ui.components.game.DonateButton
+import ie.setu.rugbygame.ui.components.game.HomeTeamNameInput
 import ie.setu.rugbygame.ui.components.game.MessageInput
 import ie.setu.rugbygame.ui.components.game.ProgressBar
 import ie.setu.rugbygame.ui.components.game.RadioButtonGroup
+import ie.setu.rugbygame.ui.components.game.SaveButton
+import ie.setu.rugbygame.ui.components.game.ScoreBoard
+import ie.setu.rugbygame.ui.components.game.ScoreCalculator
+import ie.setu.rugbygame.ui.components.game.ScoreCounter
+import ie.setu.rugbygame.ui.components.game.ScoreTypes
 import ie.setu.rugbygame.ui.components.game.WelcomeText
 import ie.setu.rugbygame.ui.screens.results.ResultsViewModel
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 
+
+
 @Composable
 fun GameScreen(modifier: Modifier = Modifier,
-                 resultsViewModel: ResultsViewModel = hiltViewModel()
+               gameViewModel: GameViewModel = hiltViewModel(),
+               resultsViewModel: ResultsViewModel = hiltViewModel()
 ) {
-    var paymentType by remember { mutableStateOf("Paypal") }
-    var paymentAmount by remember { mutableIntStateOf(10) }
-    var paymentMessage by remember { mutableStateOf("Go Homer!") }
-    var totalGamed by remember { mutableIntStateOf(0) }
+    var isGameStarted by remember { mutableStateOf(false) }
+
+    // Home Details
+    var homeTeam by remember { mutableStateOf("HomeTeam") }
+    var homeTries by remember { mutableIntStateOf(0) }
+    var homeConversions by remember { mutableIntStateOf(0) }
+    var homePenalties by remember { mutableIntStateOf(0) }
+    var homeDropGoals by remember { mutableIntStateOf(0) }
+    var homeScore by remember { mutableIntStateOf(0) }
+    // Away Details
+    var awayTeam by remember { mutableStateOf("AwayTeam") }
+    var awayTries by remember { mutableIntStateOf(0) }
+    var awayConversions by remember { mutableIntStateOf(0) }
+    var awayPenalties by remember { mutableIntStateOf(0) }
+    var awayDropGoals by remember { mutableIntStateOf(0) }
+    var awayScore by remember { mutableIntStateOf(0) }
+
     val games = resultsViewModel.uiGames.collectAsState().value
 
-    totalGamed = games.sumOf { it.paymentAmount }
+    homeScore = ScoreCalculator.calculateTotalScore(
+        tries = homeTries,
+        conversions = homeConversions,
+        penalties = homePenalties,
+        dropGoals = homeDropGoals
+    )
+
+    awayScore = ScoreCalculator.calculateTotalScore(
+        tries = awayTries,
+        conversions = awayConversions,
+        penalties = awayPenalties,
+        dropGoals = awayDropGoals
+    )
 
     Column {
         Column(
@@ -50,34 +88,72 @@ fun GameScreen(modifier: Modifier = Modifier,
             ),
             verticalArrangement = Arrangement.spacedBy(30.dp),
         ) {
+            // Welcome Text
             WelcomeText()
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            )
-            {
-                RadioButtonGroup(
-                    modifier = modifier,
-                    onPaymentTypeChange = { paymentType = it }
-                )
-                Spacer(modifier.weight(1f))
-                AmountPicker(
-                    onPaymentAmountChange = { paymentAmount = it }
-                )
-            }
-            ProgressBar(
+            
+            // Home Team Details
+            HomeTeamNameInput(
                 modifier = modifier,
-                totalGamed = totalGamed)
-            MessageInput(
-                modifier = modifier,
-                onMessageChange = { paymentMessage = it }
+                onHomeTeamNameChange = { homeTeam = it }
             )
-            DonateButton (
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Away Team Details
+            AwayTeamNameInput(
                 modifier = modifier,
-                game = RugbyGameModel(paymentType = paymentType,
-                    paymentAmount = paymentAmount,
-                    message = paymentMessage),
-                onTotalDonatedChange = { totalGamed = it }
+                onAwayTeamNameChange = { awayTeam = it }
             )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Score Board Details
+            ScoreBoard(
+                homeTeam = "Home",
+                awayTeam = "Away",
+                homeScore = homeScore,
+                awayScore = awayScore,
+                enabled = isGameStarted,
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            ScoreTypes (
+                modifier = modifier,
+                game = RugbyGameModel(
+                    homeTeam = homeTeam,
+                    homeTries = homeTries,
+                    homeConversions = homeConversions,
+                    homePenalties = homePenalties,
+                    homeDropGoals = homeDropGoals,
+                    awayTeam = awayTeam,
+                    awayTries = awayTries,
+                    awayConversions = awayConversions,
+                    awayPenalties = awayPenalties,
+                    awayDropGoals = awayDropGoals
+                ),
+                enabled = isGameStarted,
+                onHomeScoreChange = { homeScore = it },
+                onAwayScoreChange = { awayScore = it }
+            )
+
+            SaveButton (
+                modifier = modifier,
+                game = RugbyGameModel(
+                    homeTeam = homeTeam,
+                    homeTries = homeTries,
+                    homeConversions = homeConversions,
+                    homePenalties = homePenalties,
+                    homeDropGoals = homeDropGoals,
+                    awayTeam = awayTeam,
+                    awayTries = awayTries,
+                    awayConversions = awayConversions,
+                    awayPenalties = awayPenalties,
+                    awayDropGoals = awayDropGoals
+                ),
+                onIsGameStartedChange = { isGameStarted = it }
+            )
+
         }
     }
 }
@@ -95,12 +171,36 @@ fun GameScreenPreview() {
 fun PreviewGameScreen(modifier: Modifier = Modifier,
                         games: SnapshotStateList<RugbyGameModel>
 ) {
-    var paymentType by remember { mutableStateOf("Paypal") }
-    var paymentAmount by remember { mutableIntStateOf(10) }
-    var paymentMessage by remember { mutableStateOf("Go Homer!") }
-    var totalGamed by remember { mutableIntStateOf(0) }
+    var isGameStarted by remember { mutableStateOf(false) }
 
-    totalGamed = games.sumOf { it.paymentAmount }
+    // Home Details
+    var homeTeam by remember { mutableStateOf("HomeTeam") }
+    var homeTries by remember { mutableIntStateOf(0) }
+    var homeConversions by remember { mutableIntStateOf(0) }
+    var homePenalties by remember { mutableIntStateOf(0) }
+    var homeDropGoals by remember { mutableIntStateOf(0) }
+    var homeScore by remember { mutableIntStateOf(0) }
+    // Away Details
+    var awayTeam by remember { mutableStateOf("AwayTeam") }
+    var awayTries by remember { mutableIntStateOf(0) }
+    var awayConversions by remember { mutableIntStateOf(0) }
+    var awayPenalties by remember { mutableIntStateOf(0) }
+    var awayDropGoals by remember { mutableIntStateOf(0) }
+    var awayScore by remember { mutableIntStateOf(0) }
+
+    homeScore = ScoreCalculator.calculateTotalScore(
+        tries = homeTries,
+        conversions = homeConversions,
+        penalties = homePenalties,
+        dropGoals = homeDropGoals
+    )
+
+    awayScore = ScoreCalculator.calculateTotalScore(
+        tries = awayTries,
+        conversions = awayConversions,
+        penalties = awayPenalties,
+        dropGoals = awayDropGoals
+    )
 
     Column {
         Column(
@@ -110,34 +210,72 @@ fun PreviewGameScreen(modifier: Modifier = Modifier,
             ),
             verticalArrangement = Arrangement.spacedBy(30.dp),
         ) {
+            // Welcome Text
             WelcomeText()
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            )
-            {
-                RadioButtonGroup(
-                    modifier = modifier,
-                    onPaymentTypeChange = { paymentType = it }
-                )
-                Spacer(modifier.weight(1f))
-                AmountPicker(
-                    onPaymentAmountChange = { paymentAmount = it }
-                )
-            }
-            ProgressBar(
+
+            // Home Team Details
+            HomeTeamNameInput(
                 modifier = modifier,
-                totalGamed = totalGamed)
-            MessageInput(
-                modifier = modifier,
-                onMessageChange = { paymentMessage = it }
+                onHomeTeamNameChange = { homeTeam = it }
             )
-            DonateButton (
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Away Team Details
+            AwayTeamNameInput(
                 modifier = modifier,
-                game = RugbyGameModel(paymentType = paymentType,
-                    paymentAmount = paymentAmount,
-                    message = paymentMessage),
-                onTotalDonatedChange = { totalGamed = it }
+                onAwayTeamNameChange = { awayTeam = it }
             )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Score Board Details
+            ScoreBoard(
+                homeTeam = "Home",
+                awayTeam = "Away",
+                homeScore = homeScore,
+                awayScore = awayScore,
+                enabled = isGameStarted
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            ScoreTypes (
+                modifier = modifier,
+                game = RugbyGameModel(
+                    homeTeam = homeTeam,
+                    homeTries = homeTries,
+                    homeConversions = homeConversions,
+                    homePenalties = homePenalties,
+                    homeDropGoals = homeDropGoals,
+                    awayTeam = awayTeam,
+                    awayTries = awayTries,
+                    awayConversions = awayConversions,
+                    awayPenalties = awayPenalties,
+                    awayDropGoals = awayDropGoals
+                ),
+                enabled = isGameStarted,
+                onHomeScoreChange = { homeScore = it },
+                onAwayScoreChange = { awayScore = it }
+            )
+
+            SaveButton (
+                modifier = modifier,
+                game = RugbyGameModel(
+                    homeTeam = homeTeam,
+                    homeTries = homeTries,
+                    homeConversions = homeConversions,
+                    homePenalties = homePenalties,
+                    homeDropGoals = homeDropGoals,
+                    awayTeam = awayTeam,
+                    awayTries = awayTries,
+                    awayConversions = awayConversions,
+                    awayPenalties = awayPenalties,
+                    awayDropGoals = awayDropGoals
+                ),
+                onIsGameStartedChange = { isGameStarted = it }
+            )
+
         }
     }
 }

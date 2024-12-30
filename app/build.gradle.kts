@@ -111,6 +111,8 @@ dependencies {
     //Accompanist (Permission)
     implementation(libs.accompanist.permissions)
 
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

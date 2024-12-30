@@ -89,29 +89,6 @@ fun DonateButton(
                 color = Color.White
             )
         }
-        Spacer(modifier.weight(1f))
-        Text(
-            buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = Color.Black
-                    )
-                ) {
-                    append(stringResource(R.string.total) + " €")
-                }
-
-
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.secondary)
-                ) {
-                    append(totalDonated.toString())
-                }
-            })
     }
 
     Timber.i("DVM Button = : ${error.message}")
