@@ -23,10 +23,26 @@ fun ScoreTypes(
     game: RugbyGameModel,
     gameViewModel: GameViewModel = hiltViewModel(),
     enabled: Boolean = true,
+    onHomeTriesChange: (Int) -> Unit,
+    onHomeConversionsChange: (Int) -> Unit,
+    onHomePenaltiesChange: (Int) -> Unit,
+    onHomeDropGoalsChange: (Int) -> Unit,
+    onAwayTriesChange: (Int) -> Unit,
+    onAwayConversionsChange: (Int) -> Unit,
+    onAwayPenaltiesChange: (Int) -> Unit,
+    onAwayDropGoalsChange: (Int) -> Unit,
     onHomeScoreChange: (Int) -> Unit,
     onAwayScoreChange: (Int) -> Unit
 ) {
     val context = LocalContext.current
+    var homeTries = game.homeTries
+    var homeConversions = game.homeConversions
+    var homePenalties = game.homePenalties
+    var homeDropGoals = game.homeDropGoals
+    var awayTries = game.awayTries
+    var awayConversions = game.awayConversions
+    var awayPenalties = game.awayPenalties
+    var awayDropGoals = game.awayDropGoals
     var homeScore = ScoreCalculator.calculateTotalScore(
         tries = game.homeTries,
         conversions = game.homeConversions,
@@ -52,53 +68,57 @@ fun ScoreTypes(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 ScoreCounter(
                     label = "Tries (5)",
-                    count = game.homeTries,
+                    count = homeTries,
                     onIncrement = {
-                        game.homeTries++
+                        homeTries++
+                        onHomeTriesChange(homeTries)
                         homeScore = ScoreCalculator.calculateTotalScore(
-                            tries = game.homeTries,
-                            conversions = game.homeConversions,
-                            penalties = game.homePenalties,
-                            dropGoals = game.homeDropGoals
+                            tries = homeTries,
+                            conversions = homeConversions,
+                            penalties = homePenalties,
+                            dropGoals = homeDropGoals
                         )
                         onHomeScoreChange(homeScore)
-                        Toast.makeText(context,game.homeTries.toString(),Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(context,homeTries.toString(),Toast.LENGTH_SHORT).show()
                     },
                     onDecrement = {
-                        if (game.homeTries > 0) {
-                            game.homeTries--
+                        if (homeTries > 0) {
+                            homeTries--
+                            onHomeTriesChange(homeTries)
                             homeScore = ScoreCalculator.calculateTotalScore(
-                                tries = game.homeTries,
-                                conversions = game.homeConversions,
-                                penalties = game.homePenalties,
-                                dropGoals = game.homeDropGoals
+                                tries = homeTries,
+                                conversions = homeConversions,
+                                penalties = homePenalties,
+                                dropGoals = homeDropGoals
                             )
                             onHomeScoreChange(homeScore)
-                            Toast.makeText(context,game.homeTries.toString(),Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context,homeTries.toString(),Toast.LENGTH_SHORT).show()
                         }
                     }
                 )
                 ScoreCounter(
                     label = "Conversions (2)",
-                    count =  game.homeConversions,
+                    count =  homeConversions,
                     onIncrement = {
-                        game.homeConversions++
+                        homeConversions++
+                        onHomeConversionsChange(homeConversions)
                         homeScore = ScoreCalculator.calculateTotalScore(
-                            tries = game.homeTries,
-                            conversions = game.homeConversions,
-                            penalties = game.homePenalties,
-                            dropGoals = game.homeDropGoals
+                            tries = homeTries,
+                            conversions = homeConversions,
+                            penalties = homePenalties,
+                            dropGoals = homeDropGoals
                         )
                         onHomeScoreChange(homeScore)
                     },
                     onDecrement = {
-                        if (game.homeConversions > 0) {
-                            game.homeConversions--
+                        if (homeConversions > 0) {
+                            homeConversions--
+                            onHomeConversionsChange(homeConversions)
                             homeScore = ScoreCalculator.calculateTotalScore(
-                                tries = game.homeTries,
-                                conversions = game.homeConversions,
-                                penalties = game.homePenalties,
-                                dropGoals = game.homeDropGoals
+                                tries = homeTries,
+                                conversions = homeConversions,
+                                penalties = homePenalties,
+                                dropGoals = homeDropGoals
                             )
                             onHomeScoreChange(homeScore)
                         }
@@ -106,25 +126,27 @@ fun ScoreTypes(
                 )
                 ScoreCounter(
                     label = "Penalties (3)",
-                    count =  game.homePenalties,
+                    count =  homePenalties,
                     onIncrement = {
-                        game.homePenalties++
+                        homePenalties++
+                        onHomePenaltiesChange(homePenalties)
                         homeScore = ScoreCalculator.calculateTotalScore(
-                            tries = game.homeTries,
-                            conversions = game.homeConversions,
-                            penalties = game.homePenalties,
-                            dropGoals = game.homeDropGoals
+                            tries = homeTries,
+                            conversions = homeConversions,
+                            penalties = homePenalties,
+                            dropGoals = homeDropGoals
                         )
                         onHomeScoreChange(homeScore)
                     },
                     onDecrement = {
-                        if (game.homePenalties > 0) {
-                            game.homePenalties--
+                        if (homePenalties > 0) {
+                            homePenalties--
+                            onHomePenaltiesChange(homePenalties)
                             homeScore = ScoreCalculator.calculateTotalScore(
-                                tries = game.homeTries,
-                                conversions = game.homeConversions,
-                                penalties = game.homePenalties,
-                                dropGoals = game.homeDropGoals
+                                tries = homeTries,
+                                conversions = homeConversions,
+                                penalties = homePenalties,
+                                dropGoals = homeDropGoals
                             )
                             onHomeScoreChange(homeScore)
                         }
@@ -132,25 +154,27 @@ fun ScoreTypes(
                 )
                 ScoreCounter(
                     label = "Drop Goals (3)",
-                    count =  game.homeDropGoals,
+                    count =  homeDropGoals,
                     onIncrement = {
-                        game.homeDropGoals++
+                        homeDropGoals++
+                        onHomeDropGoalsChange(homeDropGoals)
                         homeScore = ScoreCalculator.calculateTotalScore(
-                            tries = game.homeTries,
-                            conversions = game.homeConversions,
-                            penalties = game.homePenalties,
-                            dropGoals = game.homeDropGoals
+                            tries = homeTries,
+                            conversions = homeConversions,
+                            penalties = homePenalties,
+                            dropGoals = homeDropGoals
                         )
                         onHomeScoreChange(homeScore)
                     },
                     onDecrement = {
-                        if (game.homeDropGoals > 0) {
-                            game.homeDropGoals--
+                        if (homeDropGoals > 0) {
+                            homeDropGoals--
+                            onHomeDropGoalsChange(homeDropGoals)
                             homeScore = ScoreCalculator.calculateTotalScore(
-                                tries = game.homeTries,
-                                conversions = game.homeConversions,
-                                penalties = game.homePenalties,
-                                dropGoals = game.homeDropGoals
+                                tries = homeTries,
+                                conversions = homeConversions,
+                                penalties = homePenalties,
+                                dropGoals = homeDropGoals
                             )
                             onHomeScoreChange(homeScore)
                         }
@@ -162,31 +186,54 @@ fun ScoreTypes(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 ScoreCounter(
                     label = "Tries (5)",
-                    count = game.awayTries,
-                    onIncrement = { game.awayTries++ },
-                    onDecrement = { if (game.awayTries > 0) game.awayTries-- }
+                    count = awayTries,
+                    onIncrement = {
+                        awayTries++
+                        onAwayTriesChange(awayTries)
+                        awayScore = ScoreCalculator.calculateTotalScore(
+                            tries = awayTries,
+                            conversions = awayConversions,
+                            penalties = awayPenalties,
+                            dropGoals = awayDropGoals
+                        )
+                        onHomeScoreChange(homeScore)
+                    },
+                    onDecrement = {
+                        if (awayTries > 0) {
+                            awayTries--
+                            onAwayTriesChange(awayTries)
+                            awayScore = ScoreCalculator.calculateTotalScore(
+                                tries = awayTries,
+                                conversions = awayConversions,
+                                penalties = awayPenalties,
+                                dropGoals = awayDropGoals
+                            )
+                            onAwayScoreChange(awayScore)
+                        } }
                 )
                 ScoreCounter(
                     label = "Conversions (2)",
-                    count =  game.awayConversions,
+                    count =  awayConversions,
                     onIncrement = {
-                        game.awayConversions++
+                        awayConversions++
+                        onAwayConversionsChange(awayConversions)
                         awayScore = ScoreCalculator.calculateTotalScore(
-                            tries = game.awayTries,
-                            conversions = game.awayConversions,
-                            penalties = game.awayPenalties,
-                            dropGoals = game.awayDropGoals
+                            tries = awayTries,
+                            conversions = awayConversions,
+                            penalties = awayPenalties,
+                            dropGoals = awayDropGoals
                         )
                         onAwayScoreChange(awayScore)
                     },
                     onDecrement = {
-                        if (game.awayConversions > 0) {
-                            game.awayConversions--
+                        if (awayConversions > 0) {
+                            awayConversions--
+                            onAwayConversionsChange(awayConversions)
                             awayScore = ScoreCalculator.calculateTotalScore(
-                                tries = game.awayTries,
-                                conversions = game.awayConversions,
-                                penalties = game.awayPenalties,
-                                dropGoals = game.awayDropGoals
+                                tries = awayTries,
+                                conversions = awayConversions,
+                                penalties = awayPenalties,
+                                dropGoals = awayDropGoals
                             )
                             onAwayScoreChange(awayScore)
                         }
@@ -194,25 +241,27 @@ fun ScoreTypes(
                 )
                 ScoreCounter(
                     label = "Penalties (3)",
-                    count =  game.awayPenalties,
+                    count =  awayPenalties,
                     onIncrement = {
-                        game.awayPenalties++
+                        awayPenalties++
+                        onAwayPenaltiesChange(awayPenalties)
                         awayScore = ScoreCalculator.calculateTotalScore(
-                            tries = game.awayTries,
-                            conversions = game.awayConversions,
-                            penalties = game.awayPenalties,
-                            dropGoals = game.awayDropGoals
+                            tries = awayTries,
+                            conversions = awayConversions,
+                            penalties = awayPenalties,
+                            dropGoals = awayDropGoals
                         )
                         onAwayScoreChange(awayScore)
                     },
                     onDecrement = {
-                        if (game.awayPenalties > 0) {
-                            game.awayPenalties--
+                        if (awayPenalties > 0) {
+                            awayPenalties--
+                            onAwayPenaltiesChange(awayPenalties)
                             awayScore = ScoreCalculator.calculateTotalScore(
-                                tries = game.awayTries,
-                                conversions = game.awayConversions,
-                                penalties = game.awayPenalties,
-                                dropGoals = game.awayDropGoals
+                                tries = awayTries,
+                                conversions = awayConversions,
+                                penalties = awayPenalties,
+                                dropGoals = awayDropGoals
                             )
                             onAwayScoreChange(awayScore)
                         }
@@ -220,25 +269,27 @@ fun ScoreTypes(
                 )
                 ScoreCounter(
                     label = "Drop Goals (3)",
-                    count =  game.awayDropGoals,
+                    count =  awayDropGoals,
                     onIncrement = {
-                        game.awayDropGoals++
+                        awayDropGoals++
+                        onAwayDropGoalsChange(awayDropGoals)
                         awayScore = ScoreCalculator.calculateTotalScore(
-                            tries = game.awayTries,
-                            conversions = game.awayConversions,
-                            penalties = game.awayPenalties,
-                            dropGoals = game.awayDropGoals
+                            tries = awayTries,
+                            conversions = awayConversions,
+                            penalties = awayPenalties,
+                            dropGoals = awayDropGoals
                         )
                         onAwayScoreChange(awayScore)
                     },
                     onDecrement = {
-                        if (game.awayDropGoals > 0) {
-                            game.awayDropGoals--
+                        if (awayDropGoals > 0) {
+                            awayDropGoals--
+                            onAwayDropGoalsChange(awayDropGoals)
                             awayScore = ScoreCalculator.calculateTotalScore(
-                                tries = game.awayTries,
-                                conversions = game.awayConversions,
-                                penalties = game.awayPenalties,
-                                dropGoals = game.awayDropGoals
+                                tries = awayTries,
+                                conversions = awayConversions,
+                                penalties = awayPenalties,
+                                dropGoals = awayDropGoals
                             )
                             onAwayScoreChange(awayScore)
                         }
