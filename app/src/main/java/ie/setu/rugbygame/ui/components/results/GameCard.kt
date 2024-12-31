@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.TextAlign
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import ie.setu.rugbygame.R
@@ -244,55 +246,162 @@ private fun GameCardContent(
 //            }
 
 //            Text(text = "Date: $dateCreated", style = MaterialTheme.typography.labelSmall)
+            
+            //Start of Expanded
 
             if (expanded) {
-                // Score Details Table
+//                // Score Details Table
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text("")
+//                    Text("Home")
+//                    Text("Away")
+//                }
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text("Tries")
+//                    Text("$homeTeamTries")
+//                    Text("$awayTeamTries")
+//                }
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text("Conversions")
+//                    Text("$homeTeamConversions")
+//                    Text("$awayTeamConversions")
+//                }
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text("Penalties")
+//                    Text("$homeTeamPenalties")
+//                    Text("$awayTeamPenalties")
+//                }
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text("Drop Goals")
+//                    Text("$homeTeamDropGoals")
+//                    Text("$awayTeamDropGoals")
+//                }
+
+                // Header row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("")
-                    Text("Home")
-                    Text("Away")
+                    Text(
+                        "",
+                        modifier = Modifier.weight(0.5f),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Text(
+                        "Home",
+                        modifier = Modifier.weight(0.25f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Text(
+                        "Away",
+                        modifier = Modifier.weight(0.25f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
                 }
 
+                // Tries row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Tries")
-                    Text("$homeTeamTries")
-                    Text("$awayTeamTries")
+                    Text(
+                        "Tries",
+                        modifier = Modifier.weight(0.5f),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Text("$homeTeamTries", modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
+                    Text("$awayTeamTries", modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
                 }
 
+                // Conversions row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Conversions")
-                    Text("$homeTeamConversions")
-                    Text("$awayTeamConversions")
+                    Text(
+                        "Conversions",
+                        modifier = Modifier.weight(0.5f),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Text("$homeTeamConversions", modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
+                    Text("$awayTeamConversions", modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
                 }
 
+                // Penalties row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Penalties")
-                    Text("$homeTeamPenalties")
-                    Text("$awayTeamPenalties")
+                    Text(
+                        "Penalties",
+                        modifier = Modifier.weight(0.5f),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Text("$homeTeamPenalties", modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
+                    Text("$awayTeamPenalties", modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
                 }
 
+                // Drop Goals row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Drop Goals")
-                    Text("$homeTeamDropGoals")
-                    Text("$awayTeamDropGoals")
+                    Text(
+                        "Drop Goals",
+                        modifier = Modifier.weight(0.5f),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Text("$homeTeamDropGoals", modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
+                    Text("$awayTeamDropGoals", modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
                 }
 
-                Text(text = "Modified: $dateModified", style = MaterialTheme.typography.labelSmall)
+                Text(
+                    text = "Modified: $dateModified",
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                    style = MaterialTheme.typography.labelSmall
+                )
 
                 // Existing buttons row
                 Row(
@@ -324,6 +433,8 @@ private fun GameCardContent(
                     )
                 }
             }
+
+
         }
 
 
