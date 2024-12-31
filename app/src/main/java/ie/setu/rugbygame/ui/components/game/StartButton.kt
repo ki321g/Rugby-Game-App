@@ -83,10 +83,10 @@ fun StartButton(
             end = 24.dp
         )
     ) {
-        Icon(Icons.Default.Add, contentDescription = "Start Game")
+        Icon(Icons.Default.Add, contentDescription = "Save Game")
         Spacer(modifier.width(width = 4.dp))
         Text(
-            text = stringResource(R.string.startButton),
+            text = stringResource(R.string.saveButton),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = Color.White

@@ -85,6 +85,8 @@ fun GameScreen(modifier: Modifier = Modifier,
         ) {
             // Welcome Text
 //            WelcomeText()
+
+            Spacer(modifier = Modifier.height(16.dp))
             
             // Home Team Details
             HomeTeamNameInput(
@@ -112,7 +114,7 @@ fun GameScreen(modifier: Modifier = Modifier,
                 enabled = true,
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+//            Spacer(modifier = Modifier.height(32.dp))
 
             ScoreTypes (
                 modifier = modifier,
