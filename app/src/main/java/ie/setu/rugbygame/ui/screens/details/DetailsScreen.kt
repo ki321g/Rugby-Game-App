@@ -195,7 +195,7 @@ fun PreviewDetailScreen(modifier: Modifier) {
         ),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        DetailsScreenText()
+//        DetailsScreenText()
         //           Row (modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -212,7 +212,7 @@ fun PreviewDetailScreen(modifier: Modifier) {
                 value = game.homeTeam,
                 onValueChange = { },
                 label = { Text(text = "Home Team") },
-                readOnly = true,
+                readOnly = false,
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 )
@@ -221,8 +221,8 @@ fun PreviewDetailScreen(modifier: Modifier) {
             OutlinedTextField(modifier = modifier.fillMaxWidth(),
                 value = game.awayTeam,
                 onValueChange = { },
-                label = { Text(text = "Away Teamt") },
-                readOnly = true,
+                label = { Text(text = "Away Team") },
+                readOnly = false,
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 )

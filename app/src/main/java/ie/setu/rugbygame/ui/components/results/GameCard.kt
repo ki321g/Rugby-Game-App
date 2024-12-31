@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import ie.setu.rugbygame.R
+import ie.setu.rugbygame.ui.components.game.ScoreCalculator
 import ie.setu.rugbygame.ui.components.results.GameCard
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import ie.setu.rugbygame.ui.theme.endGradientColor
@@ -57,8 +58,16 @@ import java.util.Date
 
 @Composable
 fun GameCard(
-    paymentType: String,
-    paymentAmount: String,
+    homeTeam: String,
+    homeTeamTries: Int,
+    homeTeamConversions: Int,
+    homeTeamPenalties: Int,
+    homeTeamDropGoals: Int,
+    awayTeam: String,
+    awayTeamTries: Int,
+    awayTeamConversions: Int,
+    awayTeamPenalties: Int,
+    awayTeamDropGoals: Int,
     message: String,
     dateCreated: String,
     dateModified: String,
@@ -73,8 +82,16 @@ fun GameCard(
         ),
         modifier = Modifier.padding(vertical = 2.dp, horizontal = 2.dp)
     ) {
-        GameCardContent(paymentType,
-            paymentAmount,
+        GameCardContent(homeTeam,
+            homeTeamTries,
+            homeTeamConversions,
+            homeTeamPenalties,
+            homeTeamDropGoals,
+            awayTeam,
+            awayTeamTries,
+            awayTeamConversions,
+            awayTeamPenalties,
+            awayTeamDropGoals,
             message,
             dateCreated,
             dateModified,
@@ -87,8 +104,16 @@ fun GameCard(
 
 @Composable
 private fun GameCardContent(
-    paymentType: String,
-    paymentAmount: String,
+    homeTeam:  String,
+    homeTeamTries: Int,
+    homeTeamConversions: Int,
+    homeTeamPenalties: Int,
+    homeTeamDropGoals: Int,
+    awayTeam: String,
+    awayTeamTries: Int,
+    awayTeamConversions: Int,
+    awayTeamPenalties: Int,
+    awayTeamDropGoals: Int,
     message: String,
     dateCreated: String,
     dateModified: String,
@@ -98,6 +123,20 @@ private fun GameCardContent(
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
+
+    val homeScore = ScoreCalculator.calculateTotalScore(
+        tries = homeTeamTries,
+        conversions = homeTeamConversions,
+        penalties = homeTeamPenalties,
+        dropGoals = homeTeamDropGoals
+    )
+
+    val awayScore = ScoreCalculator.calculateTotalScore(
+        tries = awayTeamTries,
+        conversions = awayTeamConversions,
+        penalties = awayTeamPenalties,
+        dropGoals = awayTeamDropGoals
+    )
 
     Row(
         modifier = Modifier
@@ -115,12 +154,42 @@ private fun GameCardContent(
                 )
             ))
     ) {
+        // Card Content
+
         Column(
             modifier = Modifier
                 .weight(1f)
                 .padding(14.dp)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            // Game Date
+            Text(
+                text = "Game Date: $dateCreated",
+                style = MaterialTheme.typography.labelSmall
+            )
+
+            // Home Team Section
+            Text(
+                text = "Home Team",
+                style = MaterialTheme.typography.labelSmall
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = homeTeam,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                )
+            }
+
+            // Score Row with Photo
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(photoUri)
@@ -133,30 +202,93 @@ private fun GameCardContent(
                         .clip(CircleShape)
                 )
                 Text(
-                    modifier = Modifier.padding(start = 2.dp),
-                    text = paymentType,
+                    text = "$homeScore",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
-                Spacer(Modifier.weight(1f))
+                Text(text = "vs")
                 Text(
-                    text = "€$paymentAmount",
+                    text = "$awayScore",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
             }
+
+            // Away Team Section
             Text(
-                text = "Date $dateCreated", style = MaterialTheme.typography.labelSmall
+                text = "Away Team",
+                style = MaterialTheme.typography.labelSmall
             )
-            Text(
-                text = "Modified $dateModified", style = MaterialTheme.typography.labelSmall
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = awayTeam,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                )
+            }
+
+//            Text(text = "Date: $dateCreated", style = MaterialTheme.typography.labelSmall)
+
             if (expanded) {
-                Text(modifier = Modifier.padding(vertical = 16.dp), text = message)
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween) {
+                // Score Details Table
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("")
+                    Text("Home")
+                    Text("Away")
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Tries")
+                    Text("$homeTeamTries")
+                    Text("$awayTeamTries")
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Conversions")
+                    Text("$homeTeamConversions")
+                    Text("$awayTeamConversions")
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Penalties")
+                    Text("$homeTeamPenalties")
+                    Text("$awayTeamPenalties")
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Drop Goals")
+                    Text("$homeTeamDropGoals")
+                    Text("$awayTeamDropGoals")
+                }
+
+                Text(text = "Modified: $dateModified", style = MaterialTheme.typography.labelSmall)
+
+                // Existing buttons row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     FilledTonalButton(onClick = onClickGameDetails) {
                         Text(text = "Show More")
                     }
@@ -164,19 +296,27 @@ private fun GameCardContent(
                     FilledTonalIconButton(onClick = {
                         showDeleteConfirmDialog = true
                     }) {
-                        Icon(Icons.Filled.Delete, "Delete Donation")
+                        Icon(Icons.Filled.Delete, "Delete Game")
                     }
+                }
 
-                    if (showDeleteConfirmDialog) {
-                        showDeleteAlert(
-                            onDismiss = { showDeleteConfirmDialog = false },
-                            onDelete = onClickDelete,
-//                            onRefresh = onRefreshList
-                        )
-                    }
+                if (showDeleteConfirmDialog) {
+                    showDeleteAlert(
+                        onDismiss = { showDeleteConfirmDialog = false },
+                        onDelete = onClickDelete,
+                    )
+                }
+
+                if (showDeleteConfirmDialog) {
+                    showDeleteAlert(
+                        onDismiss = { showDeleteConfirmDialog = false },
+                        onDelete = onClickDelete,
+                    )
                 }
             }
         }
+
+
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 imageVector = if (expanded) Icons.Filled.ExpandLess
@@ -219,8 +359,16 @@ fun showDeleteAlert(
 fun GameCardPreview() {
     RugbyScoreTheme {
         GameCard(
-            paymentType = "HomeTeam",
-            paymentAmount = "AwayTeam",
+            homeTeam = "HomeTeam",
+            homeTeamTries = 2,
+            homeTeamConversions = 1,
+            homeTeamPenalties = 3,
+            homeTeamDropGoals = 2,
+            awayTeam = "AwayTeam",
+            awayTeamTries = 2,
+            awayTeamConversions = 1,
+            awayTeamPenalties = 3,
+            awayTeamDropGoals = 2,
             message = """
                 A message entered 
                 by the user..."
