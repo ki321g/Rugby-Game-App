@@ -103,6 +103,7 @@ fun DetailsScreen(
                 //Date Donated Field
                 ReadOnlyTextField(value = game.dateGame.toString(),
                     label = "Game Date")
+
                 // Home Team Name Field
                 homeTeamName = game.homeTeam
                 OutlinedTextField(modifier = Modifier.fillMaxWidth(),
