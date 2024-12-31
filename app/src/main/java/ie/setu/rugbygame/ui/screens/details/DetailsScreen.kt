@@ -24,7 +24,9 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,6 +41,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.ui.components.details.DetailsScreenText
 import ie.setu.rugbygame.ui.components.details.ReadOnlyTextField
+import ie.setu.rugbygame.ui.components.game.ScoreBoard
+import ie.setu.rugbygame.ui.components.game.ScoreCalculator
+import ie.setu.rugbygame.ui.components.game.ScoreTypes
+import ie.setu.rugbygame.ui.components.game.ScoreBoard
 import ie.setu.rugbygame.ui.components.general.ShowLoader
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 
@@ -52,8 +58,21 @@ fun DetailsScreen(
     val errorEmptyMessage = "Message Cannot be Empty..."
     val errorShortMessage = "Message must be at least 2 characters"
     var text by rememberSaveable { mutableStateOf("") }
-    var homeTeamName by rememberSaveable { mutableStateOf("") }
-    var awayTeamName by rememberSaveable { mutableStateOf("") }
+    // Home Details
+    var homeTeam by rememberSaveable { mutableStateOf("") }
+//    var homeTries by rememberSaveable { mutableIntStateOf(0) }
+//    var homeConversions by rememberSaveable { mutableIntStateOf(0) }
+//    var homePenalties by rememberSaveable { mutableIntStateOf(0) }
+//    var homeDropGoals by rememberSaveable { mutableIntStateOf(0) }
+    var homeScore by rememberSaveable { mutableIntStateOf(0) }
+    // Away Details
+    var awayTeam by rememberSaveable { mutableStateOf("") }
+//    var awayTries by rememberSaveable { mutableIntStateOf(0) }
+//    var awayConversions by rememberSaveable { mutableIntStateOf(0) }
+//    var awayPenalties by rememberSaveable { mutableIntStateOf(0) }
+//    var awayDropGoals by rememberSaveable { mutableIntStateOf(0) }
+    var awayScore by rememberSaveable { mutableIntStateOf(0) }
+    // O
     var onMessageChanged by rememberSaveable { mutableStateOf(false) }
     var onHomeTeamChanged by rememberSaveable { mutableStateOf(false) }
     var onAwayTeamChanged by rememberSaveable { mutableStateOf(false) }
@@ -65,7 +84,33 @@ fun DetailsScreen(
     val error = detailViewModel.error.value
     val isLoading = detailViewModel.isLoading.value
 
-    if(isLoading) ShowLoader("Retrieving Donation Details...")
+    if(isLoading) ShowLoader("Retrieving Game Details...")
+    
+    // Setting Game Values
+    homeTeam = game.homeTeam
+//    homeTries = game.homeTries
+//    homeConversions = game.homeConversions
+//    homePenalties = game.homePenalties
+//    homeDropGoals = game.homeDropGoals
+    awayTeam = game.awayTeam
+//    awayTries = game.awayTries
+//    awayConversions = game.awayConversions
+//    awayPenalties = game.awayPenalties
+//    awayDropGoals = game.awayDropGoals
+
+    homeScore = ScoreCalculator.calculateTotalScore(
+        tries = game.homeTries,
+        conversions = game.homeConversions,
+        penalties = game.homePenalties,
+        dropGoals = game.homeDropGoals
+    )
+
+    awayScore = ScoreCalculator.calculateTotalScore(
+        tries = game.awayTries,
+        conversions = game.awayConversions,
+        penalties = game.awayPenalties,
+        dropGoals = game.awayDropGoals
+    )
 
     fun validate(text: String, field: String) {
         isEmptyError = text.isEmpty()
@@ -101,38 +146,38 @@ fun DetailsScreen(
             )
             {
                 //Date Donated Field
+                Spacer(modifier.height(height = 5.dp))
                 ReadOnlyTextField(value = game.dateGame.toString(),
                     label = "Game Date")
 
                 // Home Team Name Field
-                homeTeamName = game.homeTeam
                 OutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                    value = homeTeamName,
+                    value = homeTeam,
                     onValueChange = {
-                        homeTeamName = it
-                        validate(homeTeamName, "homeTeam")
-                        game.homeTeam = homeTeamName
+                        homeTeam = it
+                        validate(homeTeam, "homeTeam")
+                        game.homeTeam = homeTeam
                     },
                     maxLines = 2,
                     label = { Text(text = "Home Team") },
                     isError = isEmptyError && onHomeTeamChanged || isShortError && onHomeTeamChanged ,
-                    supportingText = {
-                        if (isEmptyError && onHomeTeamChanged) {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = errorEmptyMessage,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                        else
-                            if (isShortError && onHomeTeamChanged) {
-                                Text(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    text = errorShortMessage,
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                    },
+//                    supportingText = if (isEmptyError && onAwayTeamChanged || isShortError && onAwayTeamChanged) {
+//                        {
+//                            if (isEmptyError && onAwayTeamChanged) {
+//                                Text(
+//                                    modifier = Modifier.fillMaxWidth(),
+//                                    text = errorEmptyMessage,
+//                                    color = MaterialTheme.colorScheme.error
+//                                )
+//                            } else {
+//                                Text(
+//                                    modifier = Modifier.fillMaxWidth(),
+//                                    text = errorShortMessage,
+//                                    color = MaterialTheme.colorScheme.error
+//                                )
+//                            }
+//                        }
+//                    } else null,
                     trailingIcon = {
                         if (isEmptyError && onHomeTeamChanged || isShortError && onHomeTeamChanged)
                             Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
@@ -142,41 +187,51 @@ fun DetailsScreen(
                                 tint = Color.Black
                             )
                     },
-                    keyboardActions = KeyboardActions { validate(homeTeamName, "homeTeam") },
+                    keyboardActions = KeyboardActions { validate(homeTeam, "homeTeam") },
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                     )
                 )
+
+                // Display homeTeam Error Message
+                if (isEmptyError && onHomeTeamChanged || isShortError && onHomeTeamChanged) {
+                    Text(
+                        text = if (isEmptyError && onHomeTeamChanged) errorEmptyMessage else errorShortMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 //End of Home Team Name Field
+
                 // Away Team Name Field
-                awayTeamName = game.awayTeam
                 OutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                    value = awayTeamName,
+                    value = awayTeam,
                     onValueChange = {
-                        awayTeamName = it
-                        validate(awayTeamName, "awayTeam")
-                        game.awayTeam = awayTeamName
+                        awayTeam = it
+                        validate(awayTeam, "awayTeam")
+                        game.awayTeam = awayTeam
                     },
                     maxLines = 2,
                     label = { Text(text = "Away Team") },
                     isError = isEmptyError && onAwayTeamChanged || isShortError && onAwayTeamChanged,
-                    supportingText = {
-                        if (isEmptyError && onAwayTeamChanged) {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = errorEmptyMessage,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                        else
-                            if (isShortError && onAwayTeamChanged) {
-                                Text(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    text = errorShortMessage,
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                    },
+//                    supportingText = {
+//                        if (isEmptyError && onAwayTeamChanged) {
+//                            Text(
+//                                modifier = Modifier.fillMaxWidth(),
+//                                text = errorEmptyMessage,
+//                                color = MaterialTheme.colorScheme.error
+//                            )
+//                        }
+//                        else
+//                            if (isShortError && onAwayTeamChanged) {
+//                                Text(
+//                                    modifier = Modifier.fillMaxWidth(),
+//                                    text = errorShortMessage,
+//                                    color = MaterialTheme.colorScheme.error
+//                                )
+//                            }
+//                        else null
+//                    },
                     trailingIcon = {
                         if (isEmptyError && onAwayTeamChanged || isShortError && onAwayTeamChanged)
                             Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
@@ -186,25 +241,77 @@ fun DetailsScreen(
                                 tint = Color.Black
                             )
                     },
-                    keyboardActions = KeyboardActions { validate(awayTeamName, "awayTeam") },
+                    keyboardActions = KeyboardActions { validate(awayTeam, "awayTeam") },
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                     )
                 )
+
+                // Display awayTeam Error Message
+                if (isEmptyError && onAwayTeamChanged || isShortError && onAwayTeamChanged) {
+                    Text(
+                        text = if (isEmptyError && onHomeTeamChanged) errorEmptyMessage else errorShortMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
                 //End of Away Team Name Field
-                Spacer(modifier.height(height = 48.dp))
+
+                //Start Score Board Details
+                Spacer(modifier.height(height = 10.dp))
+                ScoreBoard(
+                    homeTeam = "Home",
+                    awayTeam = "Away",
+                    homeScore = homeScore,
+                    awayScore = awayScore,
+                    enabled = true,
+                )
+
+                //Start of Score Types
+                Spacer(modifier.height(height = 10.dp))
+                ScoreTypes (
+                    modifier = modifier,
+                    game = RugbyGameModel(
+                        homeTeam = game.homeTeam,
+                        homeTries = game.homeTries,
+                        homeConversions = game.homeConversions,
+                        homePenalties = game.homePenalties,
+                        homeDropGoals = game.homeDropGoals,
+                        awayTeam = game.awayTeam,
+                        awayTries = game.awayTries,
+                        awayConversions = game.awayConversions,
+                        awayPenalties = game.awayPenalties,
+                        awayDropGoals = game.awayDropGoals
+                    ),
+                    enabled = true,
+                    onHomeTriesChange = { game.homeTries = it },
+                    onHomeConversionsChange = { game.homeConversions = it },
+                    onHomePenaltiesChange = { game.homePenalties = it },
+                    onHomeDropGoalsChange = { game.homeDropGoals = it },
+                    onAwayTriesChange = { game.awayTries = it },
+                    onAwayConversionsChange = { game.awayConversions = it },
+                    onAwayPenaltiesChange = { game.awayPenalties = it },
+                    onAwayDropGoalsChange = { game.awayDropGoals = it },
+                    onHomeScoreChange = { homeScore = it },
+                    onAwayScoreChange = { awayScore = it }
+                )
+
+
+
+                //Start of Button
                 Button(
                     onClick = {
                         detailViewModel.updateGame(game)
                         onMessageChanged = false
                     },
                     elevation = ButtonDefaults.buttonElevation(20.dp),
-                    enabled = onMessageChanged
+                    enabled = true //onMessageChanged
                 ){
-                    Icon(Icons.Default.Save, contentDescription = "Save")
+                    Icon(Icons.Default.Save, contentDescription = "Update")
                     Spacer(modifier.width(width = 8.dp))
                     Text(
-                        text = "Save",
+                        text = "Update Game",
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                         color = Color.White
@@ -229,8 +336,8 @@ fun PreviewDetailScreen(modifier: Modifier) {
     val errorEmptyMessage = "Message Cannot be Empty..."
     val errorShortMessage = "Message must be at least 2 characters"
     var text by rememberSaveable { mutableStateOf("") }
-    var homeTeamName by rememberSaveable { mutableStateOf("") }
-    var awayTeamName by rememberSaveable { mutableStateOf("") }
+    var homeTeam by rememberSaveable { mutableStateOf("") }
+    var awayTeam by rememberSaveable { mutableStateOf("") }
     var onMessageChanged by rememberSaveable { mutableStateOf(false) }
     var isEmptyError by rememberSaveable { mutableStateOf(false) }
     var isShortError by rememberSaveable { mutableStateOf(false) }
@@ -264,13 +371,13 @@ fun PreviewDetailScreen(modifier: Modifier) {
             ReadOnlyTextField(value = game.dateGame.toString(),
                 label = "Game Date")
             // Home Team Name Field
-            homeTeamName = game.homeTeam
+            homeTeam = game.homeTeam
             OutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                value = homeTeamName,
+                value = homeTeam,
                 onValueChange = {
-                    homeTeamName = it
-                    validate(homeTeamName)
-                    game.homeTeam = homeTeamName
+                    homeTeam = it
+                    validate(homeTeam)
+                    game.homeTeam = homeTeam
                 },
                 maxLines = 2,
                 label = { Text(text = "Home, Team") },
@@ -301,20 +408,20 @@ fun PreviewDetailScreen(modifier: Modifier) {
                             tint = Color.Black
                         )
                 },
-                keyboardActions = KeyboardActions { validate(homeTeamName) },
+                keyboardActions = KeyboardActions { validate(homeTeam) },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 )
             )
             //End of Home Team Name Field
             // Away Team Name Field
-            awayTeamName = game.awayTeam
+            awayTeam = game.awayTeam
             OutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                value = awayTeamName,
+                value = awayTeam,
                 onValueChange = {
-                    awayTeamName = it
-                    validate(awayTeamName)
-                    game.awayTeam = awayTeamName
+                    awayTeam = it
+                    validate(awayTeam)
+                    game.awayTeam = awayTeam
                 },
                 maxLines = 2,
                 label = { Text(text = "Away Team") },
@@ -345,7 +452,7 @@ fun PreviewDetailScreen(modifier: Modifier) {
                             tint = Color.Black
                         )
                 },
-                keyboardActions = KeyboardActions { validate(awayTeamName) },
+                keyboardActions = KeyboardActions { validate(awayTeam) },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 )

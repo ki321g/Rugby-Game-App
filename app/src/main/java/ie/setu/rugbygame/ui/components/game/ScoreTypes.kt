@@ -196,7 +196,7 @@ fun ScoreTypes(
                             penalties = awayPenalties,
                             dropGoals = awayDropGoals
                         )
-                        onHomeScoreChange(homeScore)
+                        onAwayScoreChange(awayScore)
                     },
                     onDecrement = {
                         if (awayTries > 0) {

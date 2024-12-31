@@ -1,5 +1,6 @@
 package ie.setu.rugbygame.ui.components.results
 
+import android.R.attr.fontWeight
 import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -45,6 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import ie.setu.rugbygame.R
@@ -172,17 +174,17 @@ private fun GameCardContent(
                 text = "Home Team",
                 style = MaterialTheme.typography.labelSmall
             )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.Center
+//            ) {
                 Text(
                     text = homeTeam,
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
-            }
+//            }
 
             // Score Row with Photo
             Row(
@@ -204,13 +206,21 @@ private fun GameCardContent(
                 Text(
                     text = "$homeScore",
                     style = MaterialTheme.typography.headlineMedium.copy(
+                        fontSize = 48.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
-                Text(text = "vs")
+                Text(
+                    text = "vs",
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
                 Text(
                     text = "$awayScore",
                     style = MaterialTheme.typography.headlineMedium.copy(
+                        fontSize = 48.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
@@ -221,17 +231,17 @@ private fun GameCardContent(
                 text = "Away Team",
                 style = MaterialTheme.typography.labelSmall
             )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.Center
+//            ) {
                 Text(
                     text = awayTeam,
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
-            }
+//            }
 
 //            Text(text = "Date: $dateCreated", style = MaterialTheme.typography.labelSmall)
 
