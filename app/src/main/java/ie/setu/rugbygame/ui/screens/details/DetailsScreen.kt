@@ -52,7 +52,11 @@ fun DetailsScreen(
     val errorEmptyMessage = "Message Cannot be Empty..."
     val errorShortMessage = "Message must be at least 2 characters"
     var text by rememberSaveable { mutableStateOf("") }
+    var homeTeamName by rememberSaveable { mutableStateOf("") }
+    var awayTeamName by rememberSaveable { mutableStateOf("") }
     var onMessageChanged by rememberSaveable { mutableStateOf(false) }
+    var onHomeTeamChanged by rememberSaveable { mutableStateOf(false) }
+    var onAwayTeamChanged by rememberSaveable { mutableStateOf(false) }
     var isEmptyError by rememberSaveable { mutableStateOf(false) }
     var isShortError by rememberSaveable { mutableStateOf(false) }
 
@@ -63,9 +67,17 @@ fun DetailsScreen(
 
     if(isLoading) ShowLoader("Retrieving Donation Details...")
 
-    fun validate(text: String) {
+    fun validate(text: String, field: String) {
         isEmptyError = text.isEmpty()
         isShortError = text.length < 2
+
+        if (field == "homeTeam") {
+            onHomeTeamChanged = true
+            onAwayTeamChanged = false
+        } else if(field == "awayTeam") {
+            onHomeTeamChanged = false
+            onAwayTeamChanged = true
+        }
         onMessageChanged = !(isEmptyError || isShortError)
     }
 
@@ -77,90 +89,128 @@ fun DetailsScreen(
             start = 24.dp,
             end = 24.dp,
         ),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        DetailsScreenText()
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize().padding(
-                start = 10.dp,
-                end = 10.dp,
-            ),
-        )
-        {
-            // Home Team Name Field T
-            ReadOnlyTextField(value = game.homeTeam,
-                label = "Home Team")
-            // Away Team Name Field
-            ReadOnlyTextField(value = game.awayTeam,
-                label = "Away Team")
-            //Date Donated Field
-//            ReadOnlyTextField(value = game.dateDonated.toString(),
-//                label = "Date Donated")
-            //Message Field
-////            text = game.message
-//            OutlinedTextField(modifier = Modifier.fillMaxWidth(),
-//                value = text,
-//                onValueChange = {
-//                    text = it
-//                    validate(text)
-//                    game.message = text
-//                },
-//                maxLines = 2,
-//                label = { Text(text = "Message") },
-//                isError = isEmptyError || isShortError,
-//                supportingText = {
-//                    if (isEmptyError) {
-//                        Text(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            text = errorEmptyMessage,
-//                            color = MaterialTheme.colorScheme.error
-//                        )
-//                    }
-//                    else
-//                        if (isShortError) {
-//                            Text(
-//                                modifier = Modifier.fillMaxWidth(),
-//                                text = errorShortMessage,
-//                                color = MaterialTheme.colorScheme.error
-//                            )
-//                        }
-//                },
-//                trailingIcon = {
-//                    if (isEmptyError || isShortError)
-//                        Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
-//                    else
-//                        Icon(
-//                            Icons.Default.Edit, contentDescription = "add/edit",
-//                            tint = Color.Black
-//                        )
-//                },
-//                keyboardActions = KeyboardActions { validate(text) },
-//                colors = OutlinedTextFieldDefaults.colors(
-//                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-//                )
-//            )
-            //End of Message Field
-            Spacer(modifier.height(height = 48.dp))
-            Button(
-                onClick = {
-                    detailViewModel.updateGame(game)
-                    onMessageChanged = false
-                },
-                elevation = ButtonDefaults.buttonElevation(20.dp),
-                enabled = onMessageChanged
-            ){
-                Icon(Icons.Default.Save, contentDescription = "Save")
-                Spacer(modifier.width(width = 8.dp))
-                Text(
-                    text = "Save",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    color = Color.White
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+//        DetailsScreenText()
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize().padding(
+                    start = 10.dp,
+                    end = 10.dp,
+                ),
+            )
+            {
+                //Date Donated Field
+                ReadOnlyTextField(value = game.dateGame.toString(),
+                    label = "Game Date")
+                // Home Team Name Field
+                homeTeamName = game.homeTeam
+                OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+                    value = homeTeamName,
+                    onValueChange = {
+                        homeTeamName = it
+                        validate(homeTeamName, "homeTeam")
+                        game.homeTeam = homeTeamName
+                    },
+                    maxLines = 2,
+                    label = { Text(text = "Home Team") },
+                    isError = isEmptyError && onHomeTeamChanged || isShortError && onHomeTeamChanged ,
+                    supportingText = {
+                        if (isEmptyError && onHomeTeamChanged) {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = errorEmptyMessage,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                        else
+                            if (isShortError && onHomeTeamChanged) {
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = errorShortMessage,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                    },
+                    trailingIcon = {
+                        if (isEmptyError && onHomeTeamChanged || isShortError && onHomeTeamChanged)
+                            Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
+                        else
+                            Icon(
+                                Icons.Default.Edit, contentDescription = "add/edit",
+                                tint = Color.Black
+                            )
+                    },
+                    keyboardActions = KeyboardActions { validate(homeTeamName, "homeTeam") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    )
                 )
+                //End of Home Team Name Field
+                // Away Team Name Field
+                awayTeamName = game.awayTeam
+                OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+                    value = awayTeamName,
+                    onValueChange = {
+                        awayTeamName = it
+                        validate(awayTeamName, "awayTeam")
+                        game.awayTeam = awayTeamName
+                    },
+                    maxLines = 2,
+                    label = { Text(text = "Away Team") },
+                    isError = isEmptyError && onAwayTeamChanged || isShortError && onAwayTeamChanged,
+                    supportingText = {
+                        if (isEmptyError && onAwayTeamChanged) {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = errorEmptyMessage,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                        else
+                            if (isShortError && onAwayTeamChanged) {
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = errorShortMessage,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                    },
+                    trailingIcon = {
+                        if (isEmptyError && onAwayTeamChanged || isShortError && onAwayTeamChanged)
+                            Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
+                        else
+                            Icon(
+                                Icons.Default.Edit, contentDescription = "add/edit",
+                                tint = Color.Black
+                            )
+                    },
+                    keyboardActions = KeyboardActions { validate(awayTeamName, "awayTeam") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    )
+                )
+                //End of Away Team Name Field
+                Spacer(modifier.height(height = 48.dp))
+                Button(
+                    onClick = {
+                        detailViewModel.updateGame(game)
+                        onMessageChanged = false
+                    },
+                    elevation = ButtonDefaults.buttonElevation(20.dp),
+                    enabled = onMessageChanged
+                ){
+                    Icon(Icons.Default.Save, contentDescription = "Save")
+                    Spacer(modifier.width(width = 8.dp))
+                    Text(
+                        text = "Save",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = Color.White
+                    )
+                }
             }
         }
-    }
 }
 
 @Preview(showBackground = true)
@@ -178,6 +228,8 @@ fun PreviewDetailScreen(modifier: Modifier) {
     val errorEmptyMessage = "Message Cannot be Empty..."
     val errorShortMessage = "Message must be at least 2 characters"
     var text by rememberSaveable { mutableStateOf("") }
+    var homeTeamName by rememberSaveable { mutableStateOf("") }
+    var awayTeamName by rememberSaveable { mutableStateOf("") }
     var onMessageChanged by rememberSaveable { mutableStateOf(false) }
     var isEmptyError by rememberSaveable { mutableStateOf(false) }
     var isShortError by rememberSaveable { mutableStateOf(false) }
@@ -203,30 +255,121 @@ fun PreviewDetailScreen(modifier: Modifier) {
                 .fillMaxSize()
                 .padding(
                     start = 10.dp,
-                    end = 10.dp,
+                    end = 0.dp,
                 ),
         )
         {
-            //Payment Type Field
-            OutlinedTextField(modifier = modifier.fillMaxWidth(),
-                value = game.homeTeam,
-                onValueChange = { },
-                label = { Text(text = "Home Team") },
-                readOnly = false,
+            //Date Donated Field
+            ReadOnlyTextField(value = game.dateGame.toString(),
+                label = "Game Date")
+            // Home Team Name Field
+            homeTeamName = game.homeTeam
+            OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+                value = homeTeamName,
+                onValueChange = {
+                    homeTeamName = it
+                    validate(homeTeamName)
+                    game.homeTeam = homeTeamName
+                },
+                maxLines = 2,
+                label = { Text(text = "Home, Team") },
+                isError = isEmptyError || isShortError,
+                supportingText = {
+                    if (isEmptyError) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = errorEmptyMessage,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                    else
+                        if (isShortError) {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = errorShortMessage,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                },
+                trailingIcon = {
+                    if (isEmptyError || isShortError)
+                        Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
+                    else
+                        Icon(
+                            Icons.Default.Edit, contentDescription = "add/edit",
+                            tint = Color.Black
+                        )
+                },
+                keyboardActions = KeyboardActions { validate(homeTeamName) },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 )
             )
-            //Payment Amount Field
-            OutlinedTextField(modifier = modifier.fillMaxWidth(),
-                value = game.awayTeam,
-                onValueChange = { },
+            //End of Home Team Name Field
+            // Away Team Name Field
+            awayTeamName = game.awayTeam
+            OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+                value = awayTeamName,
+                onValueChange = {
+                    awayTeamName = it
+                    validate(awayTeamName)
+                    game.awayTeam = awayTeamName
+                },
+                maxLines = 2,
                 label = { Text(text = "Away Team") },
-                readOnly = false,
+                isError = isEmptyError || isShortError,
+                supportingText = {
+                    if (isEmptyError) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = errorEmptyMessage,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                    else
+                        if (isShortError) {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = errorShortMessage,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                },
+                trailingIcon = {
+                    if (isEmptyError || isShortError)
+                        Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
+                    else
+                        Icon(
+                            Icons.Default.Edit, contentDescription = "add/edit",
+                            tint = Color.Black
+                        )
+                },
+                keyboardActions = KeyboardActions { validate(awayTeamName) },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 )
             )
+            //End of Away Team Name Field
+            //            //Payment Type Field
+//            OutlinedTextField(modifier = modifier.fillMaxWidth(),
+//                value = game.homeTeam,
+//                onValueChange = { },
+//                label = { Text(text = "Home Team") },
+//                readOnly = false,
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+//                )
+//            )
+//            //Payment Amount Field
+//            OutlinedTextField(modifier = modifier.fillMaxWidth(),
+//                value = game.awayTeam,
+//                onValueChange = { },
+//                label = { Text(text = "Away Team") },
+//                readOnly = false,
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+//                )
+//            )
 //            //Date Donated Field
 //            OutlinedTextField(modifier = modifier.fillMaxWidth(),
 //                value = game.dateDonated.toString(),
