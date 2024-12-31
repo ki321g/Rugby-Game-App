@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import ie.setu.rugbygame.R
 import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.data.model.fakeGames
@@ -35,6 +34,12 @@ import ie.setu.rugbygame.ui.screens.map.MapViewModel
 import ie.setu.rugbygame.ui.screens.results.ResultsViewModel
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 import timber.log.Timber
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import ie.setu.rugbygame.navigation.AppDestination
+import ie.setu.rugbygame.navigation.Results
 
 @Composable
 fun StartButton(
@@ -44,6 +49,7 @@ fun StartButton(
     resultsViewModel: ResultsViewModel = hiltViewModel(),
     mapViewModel: MapViewModel = hiltViewModel(),
     onIsGameStartedChange: (Boolean) -> Unit,
+//    navController: NavHostController = rememberNavController(),
 //    onClickGameDetails: (String) -> Unit
 ) {
     val isGameStarted by gameViewModel.isGameStarted.collectAsState()
@@ -72,6 +78,14 @@ fun StartButton(
                 gameViewModel.insert(gameLatLng)
                 gameViewModel.startGame()
                 onIsGameStartedChange(isGameStarted)
+////                navController.navigate()
+//                navController.navigate(Results.route) {
+//                    popUpTo(navController.graph.findStartDestination().id) {
+//                        saveState = true
+//                    }
+//                    launchSingleTop = true
+//                    restoreState = true
+//                }
 //                val latestId = gameViewModel.uiLatestGame.value.firstOrNull()?._id
 //                onClickGameDetails(latestId.toString())
 //                val latestGame = gameViewModel.getLatestGames()
