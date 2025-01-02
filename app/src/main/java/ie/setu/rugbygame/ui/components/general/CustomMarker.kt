@@ -48,12 +48,6 @@ fun CustomMarker() {
                 )
             ),
         )
-
-//        Image(
-//            painter = painterResource(id = R.drawable.aboutus_homer),
-//            contentDescription = "homer image",
-//            modifier = Modifier.padding( 4.dp)
-//        )
     }
 }
 

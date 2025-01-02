@@ -1,6 +1,5 @@
 package ie.setu.rugbygame.data.model
 
-import android.net.Uri
 import androidx.room.Entity
 import com.google.firebase.firestore.DocumentId
 import java.util.Date
