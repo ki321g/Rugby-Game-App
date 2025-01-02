@@ -72,7 +72,6 @@ fun GameCard(
     awayTeamConversions: Int,
     awayTeamPenalties: Int,
     awayTeamDropGoals: Int,
-    message: String,
     dateCreated: String,
     dateModified: String,
     onClickDelete: () -> Unit,
@@ -96,7 +95,6 @@ fun GameCard(
             awayTeamConversions,
             awayTeamPenalties,
             awayTeamDropGoals,
-            message,
             dateCreated,
             dateModified,
             onClickDelete,
@@ -118,7 +116,6 @@ private fun GameCardContent(
     awayTeamConversions: Int,
     awayTeamPenalties: Int,
     awayTeamDropGoals: Int,
-    message: String,
     dateCreated: String,
     dateModified: String,
     onClickDelete: () -> Unit,
@@ -176,17 +173,12 @@ private fun GameCardContent(
                 text = "Home Team",
                 style = MaterialTheme.typography.labelSmall
             )
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.Center
-//            ) {
-                Text(
-                    text = homeTeam,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    )
+            Text(
+                text = homeTeam,
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.ExtraBold
                 )
-//            }
+            )
 
             // Score Row with Photo
             Row(
@@ -233,69 +225,17 @@ private fun GameCardContent(
                 text = "Away Team",
                 style = MaterialTheme.typography.labelSmall
             )
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.Center
-//            ) {
-                Text(
-                    text = awayTeam,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    )
+            
+            Text(
+                text = awayTeam,
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.ExtraBold
                 )
-//            }
-
-//            Text(text = "Date: $dateCreated", style = MaterialTheme.typography.labelSmall)
+            )
             
             //Start of Expanded
-
             if (expanded) {
-//                // Score Details Table
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.SpaceBetween
-//                ) {
-//                    Text("")
-//                    Text("Home")
-//                    Text("Away")
-//                }
-//
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.SpaceBetween
-//                ) {
-//                    Text("Tries")
-//                    Text("$homeTeamTries")
-//                    Text("$awayTeamTries")
-//                }
-//
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.SpaceBetween
-//                ) {
-//                    Text("Conversions")
-//                    Text("$homeTeamConversions")
-//                    Text("$awayTeamConversions")
-//                }
-//
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.SpaceBetween
-//                ) {
-//                    Text("Penalties")
-//                    Text("$homeTeamPenalties")
-//                    Text("$awayTeamPenalties")
-//                }
-//
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.SpaceBetween
-//                ) {
-//                    Text("Drop Goals")
-//                    Text("$homeTeamDropGoals")
-//                    Text("$awayTeamDropGoals")
-//                }
-
+                // Score Details Table
                 // Header row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -337,7 +277,7 @@ private fun GameCardContent(
                     Text(
                         "Tries",
                         modifier = Modifier.weight(0.5f),
-                        style = MaterialTheme.typography.headlineMedium.copy(
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -354,7 +294,7 @@ private fun GameCardContent(
                     Text(
                         "Conversions",
                         modifier = Modifier.weight(0.5f),
-                        style = MaterialTheme.typography.headlineMedium.copy(
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -371,7 +311,7 @@ private fun GameCardContent(
                     Text(
                         "Penalties",
                         modifier = Modifier.weight(0.5f),
-                        style = MaterialTheme.typography.headlineMedium.copy(
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -388,7 +328,7 @@ private fun GameCardContent(
                     Text(
                         "Drop Goals",
                         modifier = Modifier.weight(0.5f),
-                        style = MaterialTheme.typography.headlineMedium.copy(
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -490,10 +430,6 @@ fun GameCardPreview() {
             awayTeamConversions = 1,
             awayTeamPenalties = 3,
             awayTeamDropGoals = 2,
-            message = """
-                A message entered 
-                by the user..."
-            """.trimIndent(),
             dateCreated = DateFormat.getDateTimeInstance().format(Date()),
             dateModified = DateFormat.getDateTimeInstance().format(Date()),
             onClickDelete = { },
