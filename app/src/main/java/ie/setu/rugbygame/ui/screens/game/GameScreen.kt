@@ -114,8 +114,6 @@ fun GameScreen(modifier: Modifier = Modifier,
                 enabled = true,
             )
 
-//            Spacer(modifier = Modifier.height(32.dp))
-
             ScoreTypes (
                 modifier = modifier,
                 game = RugbyGameModel(
@@ -130,7 +128,6 @@ fun GameScreen(modifier: Modifier = Modifier,
                     awayPenalties = awayPenalties,
                     awayDropGoals = awayDropGoals
                 ),
-//                enabled = isGameStarted,
                 enabled = true,
                 onHomeTriesChange = { homeTries = it },
                 onHomeConversionsChange = { homeConversions = it },
@@ -143,6 +140,9 @@ fun GameScreen(modifier: Modifier = Modifier,
                 onHomeScoreChange = { homeScore = it },
                 onAwayScoreChange = { awayScore = it }
             )
+
+//            Spacer(modifier = Modifier.height(32.dp))
+
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
