@@ -29,10 +29,18 @@ internal fun GameCardList(
             key = { game -> game._id }
         ) { game ->
             GameCard(
-                paymentType = game.paymentType,
-                paymentAmount = game.paymentAmount,
-                message = game.message,
-                dateCreated = DateFormat.getDateTimeInstance().format(game.dateDonated),
+                homeTeam = game.homeTeam,
+                homeTeamTries = game.homeTries,
+                homeTeamConversions = game.homeConversions,
+                homeTeamPenalties = game.homePenalties,
+                homeTeamDropGoals = game.homeDropGoals,
+                awayTeam = game.awayTeam,
+                awayTeamTries = game.awayTries,
+                awayTeamConversions = game.awayConversions,
+                awayTeamPenalties = game.awayPenalties,
+                awayTeamDropGoals = game.awayDropGoals,
+                message = "hello",
+                dateCreated = DateFormat.getDateTimeInstance().format(game.dateGame),
                 dateModified = DateFormat.getDateTimeInstance().format(game.dateModified),
                 onClickDelete = { onDeleteGame(game) },
                 onClickGameDetails = { onClickGameDetails(game._id) },

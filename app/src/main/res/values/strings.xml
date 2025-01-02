@@ -38,9 +38,12 @@
         <string name="home">Home</string>
         <string name="logout">Logout</string>
 
-
+        <string name="startButton">Start Game</string>
+        <string name="saveButton">Save Game</string>
         <string name="resultsTitle">Game Results</string>
         <string name="gameTitle">Welcome</string>
-        <string name="gameSubtitle">Please Play Fairly</string>
+        <string name="gameSubtitle">Enter Team Names and Scores</string>
         <string name="empty_list">No Games Yet - Go add a Game!</string>
+        <string name="home_team">Home Team</string>
+        <string name="away_team">Away Team</string>
 </resources>

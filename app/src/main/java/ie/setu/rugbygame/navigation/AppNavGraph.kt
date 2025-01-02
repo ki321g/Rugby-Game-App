@@ -86,7 +86,12 @@ fun NavHostProvider(
 
         composable(route = Game.route) {
             //call our 'Donate' Screen Here
-            GameScreen(modifier = modifier)
+            GameScreen(modifier = modifier,
+//                onClickGameDetails = {
+//                        gameId : String ->
+//                    navController.navigateToGameDetails(gameId)
+//                },
+                )
         }
 
         composable(route = Results.route) {

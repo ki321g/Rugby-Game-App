@@ -20,10 +20,10 @@ import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 fun ResultsText(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(
-            top = 24.dp,
-            bottom = 24.dp
+            top = 12.dp,
+            bottom = 12.dp
         ),
-        verticalArrangement = Arrangement.spacedBy(24.dp)) {
+        verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(
             text = stringResource(R.string.resultsTitle),
             fontWeight = FontWeight.Bold,
