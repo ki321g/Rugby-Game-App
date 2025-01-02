@@ -49,8 +49,6 @@ fun StartButton(
     resultsViewModel: ResultsViewModel = hiltViewModel(),
     mapViewModel: MapViewModel = hiltViewModel(),
     onIsGameStartedChange: (Boolean) -> Unit,
-//    navController: NavHostController = rememberNavController(),
-//    onClickGameDetails: (String) -> Unit
 ) {
     val isGameStarted by gameViewModel.isGameStarted.collectAsState()
     val games = resultsViewModel.uiGames.collectAsState().value
@@ -78,18 +76,6 @@ fun StartButton(
                 gameViewModel.insert(gameLatLng)
                 gameViewModel.startGame()
                 onIsGameStartedChange(isGameStarted)
-////                navController.navigate()
-//                navController.navigate(Results.route) {
-//                    popUpTo(navController.graph.findStartDestination().id) {
-//                        saveState = true
-//                    }
-//                    launchSingleTop = true
-//                    restoreState = true
-//                }
-//                val latestId = gameViewModel.uiLatestGame.value.firstOrNull()?._id
-//                onClickGameDetails(latestId.toString())
-//                val latestGame = gameViewModel.getLatestGames()
-//                onClickGameDetails(latestGame._ID.toString())
         },
         elevation = ButtonDefaults.buttonElevation(20.dp),
         contentPadding = PaddingValues(
@@ -108,7 +94,6 @@ fun StartButton(
     }
 
     Timber.i("DVM Button = : ${error.message}")
-    //Required to refresh our 'totalDonated'
     if(isError)
         Toast.makeText(context,"Unable to Start Game at this Time...",
             Toast.LENGTH_SHORT).show()
@@ -149,7 +134,7 @@ fun PreviewStartButton(
         Icon(Icons.Default.Add, contentDescription = "Save Game")
         Spacer(modifier.width(width = 4.dp))
         Text(
-            text = stringResource(R.string.startButton),
+            text = stringResource(R.string.saveButton),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = Color.White

@@ -39,7 +39,6 @@ internal fun GameCardList(
                 awayTeamConversions = game.awayConversions,
                 awayTeamPenalties = game.awayPenalties,
                 awayTeamDropGoals = game.awayDropGoals,
-                message = "hello",
                 dateCreated = DateFormat.getDateTimeInstance().format(game.dateGame),
                 dateModified = DateFormat.getDateTimeInstance().format(game.dateModified),
                 onClickDelete = { onDeleteGame(game) },

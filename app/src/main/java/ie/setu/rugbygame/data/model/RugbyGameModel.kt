@@ -1,6 +1,5 @@
 package ie.setu.rugbygame.data.model
 
-import android.net.Uri
 import androidx.room.Entity
 import com.google.firebase.firestore.DocumentId
 import java.util.Date
@@ -30,12 +29,12 @@ data class RugbyGameModel(
 val fakeGames = List(30) { i ->
     RugbyGameModel(
         _id = "12345" + i,
-        "HomeTeam$i",
+        "HomeTeam_$i",
         i.toInt(),
         i.toInt(),
         i.toInt(),
         i.toInt(),
-        "AwayTeam$i",
+        "AwayTeam_$i",
         i.toInt(),
         i.toInt(),
         i.toInt(),

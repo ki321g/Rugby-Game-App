@@ -4,24 +4,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.rugbygame.data.model.RugbyGameModel
 import ie.setu.rugbygame.ui.screens.game.GameViewModel
-import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.tooling.preview.Preview
+import ie.setu.rugbygame.data.model.fakeGames
+import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 
 @Composable
 fun ScoreTypes(
     modifier: Modifier = Modifier,
     game: RugbyGameModel,
-    gameViewModel: GameViewModel = hiltViewModel(),
+//    gameViewModel: GameViewModel = hiltViewModel(),
     enabled: Boolean = true,
     onHomeTriesChange: (Int) -> Unit,
     onHomeConversionsChange: (Int) -> Unit,
@@ -34,7 +34,6 @@ fun ScoreTypes(
     onHomeScoreChange: (Int) -> Unit,
     onAwayScoreChange: (Int) -> Unit
 ) {
-    val context = LocalContext.current
     var homeTries = game.homeTries
     var homeConversions = game.homeConversions
     var homePenalties = game.homePenalties
@@ -79,8 +78,7 @@ fun ScoreTypes(
                             dropGoals = homeDropGoals
                         )
                         onHomeScoreChange(homeScore)
-//                        Toast.makeText(context,homeTries.toString(),Toast.LENGTH_SHORT).show()
-                    },
+                     },
                     onDecrement = {
                         if (homeTries > 0) {
                             homeTries--
@@ -91,9 +89,7 @@ fun ScoreTypes(
                                 penalties = homePenalties,
                                 dropGoals = homeDropGoals
                             )
-                            onHomeScoreChange(homeScore)
-//                            Toast.makeText(context,homeTries.toString(),Toast.LENGTH_SHORT).show()
-                        }
+                            onHomeScoreChange(homeScore)}
                     }
                 )
                 ScoreCounter(
@@ -299,3 +295,52 @@ fun ScoreTypes(
         }
     }
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun ScoreTypesPreview() {
+    RugbyScoreTheme {
+        PreviewScoreTypes(
+            Modifier,
+            games = fakeGames.toMutableStateList()
+        )
+    }
+}
+
+@Composable
+fun PreviewScoreTypes(
+    modifier: Modifier = Modifier,
+    games: SnapshotStateList<RugbyGameModel>) {
+    RugbyScoreTheme {
+        ScoreTypes (
+            Modifier,
+            game = RugbyGameModel(
+                homeTeam = games[1].homeTeam,
+                homeTries = games[1].homeTries,
+                homeConversions = games[1].homeConversions,
+                homePenalties = games[1].homePenalties,
+                homeDropGoals = games[1].homeDropGoals,
+                awayTeam = games[1].awayTeam,
+                awayTries = games[1].awayTries,
+                awayConversions = games[1].awayConversions,
+                awayPenalties = games[1].awayPenalties,
+                awayDropGoals = games[1].awayDropGoals
+            ),
+            enabled = true,
+            onHomeTriesChange = {},
+            onHomeConversionsChange = {},
+            onHomePenaltiesChange = {},
+            onHomeDropGoalsChange = {},
+            onAwayTriesChange = {},
+            onAwayConversionsChange = {},
+            onAwayPenaltiesChange = {},
+            onAwayDropGoalsChange = {},
+            onHomeScoreChange = {},
+            onAwayScoreChange = {},
+        )
+
+    }
+}
+
+

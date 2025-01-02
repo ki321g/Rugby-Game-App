@@ -8,7 +8,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
 
 @Composable
 fun ScoreCounter(
@@ -38,5 +40,19 @@ fun ScoreCounter(
                 Icon(Icons.Default.AddCircle, "Increase", tint = MaterialTheme.colorScheme.primary)
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScoreCounterPreview() {
+    RugbyScoreTheme {
+        ScoreCounter(
+            label = "Home",
+            count = 1,
+            onIncrement = {},
+            onDecrement = {},
+            Modifier
+        )
     }
 }
