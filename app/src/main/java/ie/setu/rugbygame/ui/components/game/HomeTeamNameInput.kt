@@ -17,13 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
 @Composable
-fun MessageInput(
+fun HomeTeamNameInput(
     modifier: Modifier = Modifier,
-    onMessageChange: (String) -> Unit
+    onHomeTeamNameChange: (String) -> Unit
 ) {
 
     var homeTeam by remember { mutableStateOf("") }
-    var awayTeam by remember { mutableStateOf("") }
 
     OutlinedTextField(
         colors = OutlinedTextFieldDefaults.colors(
@@ -35,38 +34,21 @@ fun MessageInput(
         value = homeTeam,
         onValueChange = {
             homeTeam = it
-            onMessageChange(homeTeam)
+            onHomeTeamNameChange(homeTeam)
         },
         modifier = modifier.fillMaxWidth(),
         label = {
             Text(stringResource(R.string.home_team))
         }
     )
-    OutlinedTextField(
-        colors = OutlinedTextFieldDefaults.colors(
-            cursorColor = MaterialTheme.colorScheme.primary,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-        ),
-        maxLines = 2,
-        value = awayTeam,
-        onValueChange = {
-            awayTeam = it
-            onMessageChange(awayTeam)
-        },
-        modifier = modifier.fillMaxWidth(),
-        label = {
-            Text(stringResource(R.string.away_team))
-        }
-    )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun MessagePreview() {
+fun HomeTeamNamePreview() {
     RugbyScoreTheme {
-        MessageInput(
+        HomeTeamNameInput(
             Modifier,
-            onMessageChange = {})
+            onHomeTeamNameChange = {})
     }
 }

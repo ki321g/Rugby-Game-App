@@ -42,7 +42,7 @@ object About : AppDestination {
 
 object Details : AppDestination {
     override val icon = Icons.Filled.Details
-    override val label = "Details"
+    override val label = "Game Details"
     const val idArg = "id"
     override val route = "details/{$idArg}"
     val arguments = listOf(

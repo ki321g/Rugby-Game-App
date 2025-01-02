@@ -11,6 +11,7 @@ interface FirestoreService {
 
     suspend fun getAll(email: String) : Games
     suspend fun get(email: String, gameId: String) : Game?
+    suspend fun getLatest(email: String) : Games
     suspend fun insert(email: String, game: Game)
     suspend fun update(email: String, game: Game)
     suspend fun delete(email: String, gameId: String)

@@ -49,7 +49,7 @@ class AuthRepository
 
     override suspend fun createUser(name: String, email: String, password: String): FirebaseSignInResponse {
         return try {
-            val uri = Uri.parse("android.resource://ie.setu.rugbygame/drawable/aboutus_homer")
+            val uri = Uri.parse("android.resource://ie.setu.rugbygame/drawable/profile_temp")
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             result.user?.updateProfile(UserProfileChangeRequest
                 .Builder()

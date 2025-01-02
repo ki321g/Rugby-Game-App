@@ -1,5 +1,6 @@
 package ie.setu.rugbygame.ui.screens.map
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -9,7 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -23,6 +26,7 @@ import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
+import ie.setu.rugbygame.ui.components.game.ScoreCalculator
 import ie.setu.rugbygame.ui.components.general.CustomMarker
 import ie.setu.rugbygame.ui.screens.results.ResultsViewModel
 import ie.setu.rugbygame.ui.theme.RugbyScoreTheme
@@ -48,7 +52,7 @@ fun MapScreen(
     }
 
     val currentLocation = mapViewModel.currentLatLng.collectAsState().value
-    val donations = resultsViewModel.uiGames.collectAsState().value
+    val games = resultsViewModel.uiGames.collectAsState().value
 
     Timber.i("MAP LAT/LNG PERMISSIONS $permissions ")
 
@@ -76,12 +80,30 @@ fun MapScreen(
                 title = "Current Location",
                 snippet = "This is My Current Location"
             )
-            donations.forEach {
+            games.forEach {
+                val homeScore = ScoreCalculator.calculateTotalScore(
+                    tries = it.homeTries,
+                    conversions = it.homeConversions,
+                    penalties = it.homePenalties,
+                    dropGoals = it.homeDropGoals
+                )
+                val awayScore = ScoreCalculator.calculateTotalScore(
+                    tries = it.awayTries,
+                    conversions = it.awayConversions,
+                    penalties = it.awayPenalties,
+                    dropGoals = it.awayDropGoals
+                )
+
+                val gameDetails = buildString {
+                    append("${it.homeTeam} : ")
+                    append(" ${it.awayTeam}")
+                }
+
                 val position = LatLng(it.latitude,it.longitude)
                 MarkerComposable(
                     state = MarkerState(position = position),
-                    title = it.paymentType + " €" + it.paymentAmount,
-                    snippet = it.message
+                    title = "Home $homeScore : $awayScore Away",
+                    snippet = gameDetails
                 ) { CustomMarker() }
             }
         }

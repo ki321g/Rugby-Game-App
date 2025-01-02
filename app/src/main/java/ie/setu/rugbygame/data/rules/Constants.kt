@@ -16,7 +16,7 @@ object Constants {
     const val SIGN_UP_REQUEST = "signUpRequest"
 
     //Buttons
-    const val SIGN_IN_WITH_GOOGLE = "Sign in with Google"
+    const val SIGN_IN_WITH_GOOGLE = "Sign In/Up with Google"
     const val SIGN_OUT = "Sign-out"
 
 }
