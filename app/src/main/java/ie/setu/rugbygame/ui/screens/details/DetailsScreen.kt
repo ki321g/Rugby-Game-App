@@ -298,7 +298,7 @@ fun PreviewDetailScreen(modifier: Modifier,
 
     var onMessageChanged by rememberSaveable { mutableStateOf(false) }
     var onHomeTeamChanged by rememberSaveable { mutableStateOf(false) }
-    var onAwayTeamChanged by rememberSavgit add .eable { mutableStateOf(false) }
+    var onAwayTeamChanged by rememberSaveable { mutableStateOf(false) }
     var isEmptyError by rememberSaveable { mutableStateOf(false) }
     var isShortError by rememberSaveable { mutableStateOf(false) }
 

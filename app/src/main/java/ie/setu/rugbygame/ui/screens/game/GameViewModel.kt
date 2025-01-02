@@ -23,13 +23,6 @@ constructor(private val repository: FirestoreService,
     var error = mutableStateOf(Exception())
     var isLoading = mutableStateOf(false)
 
-//    private val _games
-//            = MutableStateFlow<List<RugbyGameModel>>(emptyList())
-//    val uiLatestGame: StateFlow<List<RugbyGameModel>>
-//            = _games.asStateFlow()
-//    var iserror = mutableStateOf(false)
-//    var isloadingGetGames = mutableStateOf(false)
-//    var error = mutableStateOf(Exception())
 
     private val _isGameStarted = MutableStateFlow(false)
     var isGameStarted: StateFlow<Boolean> = _isGameStarted.asStateFlow()
@@ -53,24 +46,5 @@ constructor(private val repository: FirestoreService,
         _isGameStarted.value = true
     }
 
-//    fun getLatestGames() {
-//        viewModelScope.launch {
-//            try {
-//                isloadingGetGames.value = true
-//                repository.getLatest(authService.email!!).collect { items ->
-//                    _games.value = items
-//                    iserror.value = false
-//                    isloadingGetGames.value = false
-//                }
-//                Timber.i("DVM RVM = : ${_games.value}")
-//            }
-//            catch(e:Exception) {
-//                iserror.value = true
-//                isloadingGetGames.value = false
-//                error.value = e
-//                Timber.i("RVM Error ${e.message}")
-//            }
-//        }
-//    }
 
 }
